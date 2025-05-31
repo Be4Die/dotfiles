@@ -50,7 +50,7 @@ echo "Установка расширенного оформления"
 
 # --- Установка иконок ---
 install_from_git "https://github.com/vinceliuice/Tela-icon-theme.git" \
-    "sudo ./install.sh -a -c grey" || exit 1
+    "sudo ./install.sh grey" || exit 1
 
 
 echo "Все компоненты успешно установлены. Временные файлы удалены."
