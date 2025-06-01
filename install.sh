@@ -90,7 +90,7 @@ if [ -z "$DISPLAY" ]; then
     echo "Графическая сессия Xfce не обнаружена."
     echo "Пожалуйста, выполните после перезагрузки:"
     echo "xfconf-query -c xsettings -p /Net/ThemeName -s 'Graphite-dark'"
-    echo "xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-grey-dark'"
+    echo "xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-grey'"
     echo "xfconf-query -c xfwm4 -p /general/theme -s 'Graphite-dark'"
 else
     # Применяем настройки
@@ -102,7 +102,7 @@ else
     else
         echo -e "\n⚠️ Ошибка применения настроек! Примените вручную через:"
         echo "Настройки → Внешний вид → Стиль: Graphite-dark"
-        echo "Настройки → Внешний вид → Иконки: Tela-grey-dark"
+        echo "Настройки → Внешний вид → Иконки: Tela-grey"
         echo "Настройки → Менеджер окон → Стиль: Graphite-dark"
     fi
 fi
