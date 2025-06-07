@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Автозапуск
+riverctl spawn "waybar"
+riverctl spawn "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river"
+
+# Клавиша модификатора (Win)
+mod="Super"
+
+# Привязки клавиш
+riverctl map normal $mod+Return spawn "alacritty"
+riverctl map normal $mod+Q close
+riverctl map normal $mod+E spawn "bemenu-run"
+riverctl map normal $mod+P spawn 'grim -g "$(slurp)" ~/screenshot-$(date +"%Y-%m-%d_%H-%M-%S").png && notify-send "Скриншот сохранён"'
+riverctl map normal $mod+Shift+P spawn 'grim -g "$(slurp)" - | wl-copy && notify-send "Скриншот скопирован в буфер"'
+
+# Управление окнами
+riverctl map normal $mod+J focus-view next
+riverctl map normal $mod+K focus-view previous
+riverctl map normal $mod+Shift+J swap next
+riverctl map normal $mod+Shift+K swap previous
+
+# Режимы расположения
+riverctl map normal $mod+F toggle-fullscreen
+riverctl map normal $mod+Space toggle-float
+
+# Выход из River
+riverctl map normal $mod+Shift+E exit

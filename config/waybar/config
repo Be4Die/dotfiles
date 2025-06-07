@@ -1,0 +1,21 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "modules-left": ["river/tags", "river/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["battery", "network", "tray"],
+    
+    "clock": {
+      "format": " {:%H:%M}",
+      "tooltip-format": "{:%A, %d %B}"
+    },
+    "battery": {
+      "format": "{capacity}% {icon}",
+      "format-icons": ["", "", "", "", ""]
+    },
+    "network": {
+      "format-wifi": " {essid}",
+      "format-ethernet": " {ipaddr}"
+    }
+  }
