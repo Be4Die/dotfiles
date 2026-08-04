@@ -28,6 +28,13 @@ hl.monitor({
 -- Вывод через разъем AMD, но рендеринг на холодном и экономичном Intel
 hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card0")
 
+-- Fix blurry text in XWayland apps (ONLYOFFICE, Steam, etc.) on Retina display with fractional scaling
+hl.config({
+    xwayland = {
+        force_zero_scaling = true,
+    },
+})
+
 
 ---------------------------------
 ---- TOUCHPAD & GESTURES ----
