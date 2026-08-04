@@ -1,0 +1,158 @@
+/* Catppuccin Frappe Palette */
+@define-color rosewater #f2d5cf;
+@define-color flamingo #eebebe;
+@define-color pink #f4b8e4;
+@define-color mauve #ca9ee6;
+@define-color red #e78284;
+@define-color maroon #ea999c;
+@define-color peach #ef9f76;
+@define-color yellow #e5c890;
+@define-color green #a6d189;
+@define-color teal #81c8be;
+@define-color sky #99d1db;
+@define-color sapphire #85c1dc;
+@define-color blue #8caaee;
+@define-color lavender #babbf1;
+@define-color text #c6d0f5;
+@define-color subtext1 #b5bfe2;
+@define-color subtext0 #a5adce;
+@define-color overlay2 #949cbb;
+@define-color overlay1 #838ba7;
+@define-color overlay0 #737994;
+@define-color surface2 #626880;
+@define-color surface1 #51576d;
+@define-color surface0 #414559;
+@define-color base #303446;
+@define-color mantle #292c3c;
+@define-color crust #232634;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 12.5px; /* уменьшил для компактности */
+    font-weight: 500;
+    min-height: 0;
+    border: none;
+}
+
+/* === Основной бар — полностью прозрачный === */
+window#waybar {
+    background-color: transparent;
+    color: @text;
+    border: none;
+    box-shadow: none;
+}
+
+/* === Общий стиль всех островков === */
+#workspaces,
+#window,
+#clock,
+#language,
+#custom-gpu-info,
+#cpu,
+#memory,
+#pulseaudio,
+#bluetooth,
+#network,
+#tray {
+    background-color: @mantle;
+    border-radius: 9999px;
+    padding: 0 10px;
+    margin: 0 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* === Workspaces (левая группа) === */
+#workspaces {
+    padding: 3px 6px;
+}
+
+#workspaces button {
+    color: @overlay1;
+    padding: 3px 10px;
+    margin: 0 2px;
+    border-radius: 9999px;
+    min-width: 28px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#workspaces button.active {
+    color: @base;
+    background-color: @mauve;
+    box-shadow: 0 0 8px rgba(202, 158, 230, 0.5);
+    font-weight: 700;
+}
+
+#workspaces button:hover {
+    color: @text;
+    background-color: @surface1;
+}
+
+/* === Window title === */
+#window {
+    color: @subtext1;
+    font-style: italic;
+    padding: 0 14px;
+}
+
+/* === Clock (центральный островок) === */
+#clock {
+    color: @blue;
+    font-weight: 700;
+    padding: 0 18px;
+}
+
+/* === Правые модули с цветами === */
+#language {
+    color: @lavender;
+}
+#custom-gpu-info {
+    color: @peach;
+}
+#cpu {
+    color: @green;
+}
+#cpu.critical {
+    color: @red;
+}
+#memory {
+    color: @yellow;
+}
+#pulseaudio {
+    color: @teal;
+}
+#pulseaudio.muted {
+    color: @red;
+}
+#bluetooth {
+    color: @sky;
+}
+#bluetooth.connected {
+    color: @green;
+}
+#bluetooth.disabled {
+    color: @overlay0;
+}
+#network {
+    color: @sapphire;
+}
+#network.disconnected {
+    color: @red;
+}
+
+/* Tray */
+#tray {
+    padding: 0 6px;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @red;
+    border-radius: 50%;
+}
+
+/* Дополнительно: принудительно ограничиваем высоту */
+window#waybar {
+    min-height: 28px;
+}

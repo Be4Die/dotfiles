@@ -1,0 +1,13 @@
+apple_cursor
+catppuccin-gtk-theme-frappe
+catppuccin-gtk-theme-git
+catppuccin-sddm-theme-frappe
+clash-verge-rev-bin
+jack
+jetbrains-toolbox
+mihomo-bin
+qt6ct-kde
+setrixtui
+ttf-times-new-roman
+unityhub
+waybar-git

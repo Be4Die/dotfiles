@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+# Wallpaper Mode Toggle Script for Hyprland / Dotfiles
+# Usage:
+#   wallpaper-toggle              # Toggle between video (mpvpaper) and static (hyprpaper)
+#   wallpaper-toggle video [ID]   # Force video mode (default ID=1)
+#   wallpaper-toggle static [ID]  # Force static mode (default ID=1)
+#   wallpaper-toggle init         # Initialize state at Hyprland startup
+
+STATE_FILE="$HOME/.cache/wallpaper_mode"
+WALLPAPER_DIR="$HOME/wallpapers"
+
+TARGET_MODE="$1"
+INDEX="${2:-1}"
+
+CURRENT_MODE="video"
+if [ -f "$STATE_FILE" ]; then
+    CURRENT_MODE=$(cat "$STATE_FILE")
+fi
+
+kill_all_renderers() {
+    killall -9 mpvpaper hyprpaper linux-wallpaperengine 2>/dev/null || true
+    sleep 0.2
+}
+
+apply_video_mode() {
+    kill_all_renderers
+    
+    H_MP4="$WALLPAPER_DIR/h_${INDEX}.mp4"
+    V_MP4="$WALLPAPER_DIR/v_${INDEX}.mp4"
+
+    [ ! -f "$H_MP4" ] && H_MP4=$(ls "$WALLPAPER_DIR"/h_*.mp4 2>/dev/null | head -n 1)
+    [ ! -f "$V_MP4" ] && V_MP4=$(ls "$WALLPAPER_DIR"/v_*.mp4 2>/dev/null | head -n 1)
+
+    if [ -n "$H_MP4" ] && [ -f "$H_MP4" ]; then
+        mpvpaper -o "no-audio --loop-file=inf" HDMI-A-1 "$H_MP4" &
+    fi
+    if [ -n "$V_MP4" ] && [ -f "$V_MP4" ]; then
+        mpvpaper -o "no-audio --loop-file=inf" DVI-D-1 "$V_MP4" &
+    fi
+
+    echo "video" > "$STATE_FILE"
+    notify-send -a "Wallpaper" -i video-display "Wallpaper Mode" "Switched to Animated Video (mpvpaper)" 2>/dev/null || true
+}
+
+apply_static_mode() {
+    kill_all_renderers
+
+    H_IMG="$WALLPAPER_DIR/h_${INDEX}.png"
+    [ ! -f "$H_IMG" ] && H_IMG="$WALLPAPER_DIR/h_${INDEX}.jpg"
+    [ ! -f "$H_IMG" ] && H_IMG=$(ls "$WALLPAPER_DIR"/h_*.png "$WALLPAPER_DIR"/h_*.jpg 2>/dev/null | head -n 1)
+
+    V_IMG="$WALLPAPER_DIR/v_${INDEX}.png"
+    [ ! -f "$V_IMG" ] && V_IMG="$WALLPAPER_DIR/v_${INDEX}.jpg"
+    [ ! -f "$V_IMG" ] && V_IMG=$(ls "$WALLPAPER_DIR"/v_*.png "$WALLPAPER_DIR"/v_*.jpg 2>/dev/null | head -n 1)
+
+    HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
+    cat <<EOF > "$HYPRPAPER_CONF"
+splash = false
+
+wallpaper {
+    monitor = HDMI-A-1
+    path = $H_IMG
+    fit_mode = cover
+}
+
+wallpaper {
+    monitor = DVI-D-1
+    path = $V_IMG
+    fit_mode = cover
+}
+
+wallpaper {
+    monitor =
+    path = $H_IMG
+    fit_mode = cover
+}
+EOF
+
+    hyprpaper &
+
+    echo "static" > "$STATE_FILE"
+    notify-send -a "Wallpaper" -i preferences-desktop-wallpaper "Wallpaper Mode" "Switched to Static Image (hyprpaper)" 2>/dev/null || true
+}
+
+case "$TARGET_MODE" in
+    video|animated|anim)
+        apply_video_mode
+        ;;
+    static|img|image)
+        apply_static_mode
+        ;;
+    init|daemon)
+        if [ "$CURRENT_MODE" = "static" ]; then
+            apply_static_mode
+        else
+            apply_video_mode
+        fi
+        ;;
+    *)
+        if [ "$CURRENT_MODE" = "video" ]; then
+            apply_static_mode
+        else
+            apply_video_mode
+        fi
+        ;;
+esac

@@ -1,0 +1,51 @@
+[global]
+    monitor = 0
+    origin = top-right
+    offset = 15x15
+    width = 320
+    height = 200
+    notification_height = 0
+
+    # Внешний вид
+    frame_width = 2
+    corner_radius = 12
+    transparency = 8
+    padding = 10
+    horizontal_padding = 10
+    separator_height = 2
+    separator_color = frame
+
+    # Шрифт (установите ttf-inter или замените на свой)
+    font = Inter 10
+    markup = full
+
+    # Иконки
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 48
+    icon_theme = Papirus-Dark,Catppuccin-Dark,Adwaita
+
+    # Горячие клавиши (совместимы с Hyprland по умолчанию)
+    close = ctrl+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
+[urgency_low]
+    background = "#292c3c"   # Mantle
+    foreground = "#c6d0f5"   # Text
+    frame_color = "#a6d189"  # Green
+    timeout = 5
+
+[urgency_normal]
+    background = "#303446"   # Base
+    foreground = "#c6d0f5"   # Text
+    frame_color = "#8caaee"  # Blue
+    timeout = 10
+
+[urgency_critical]
+    background = "#292c3c"   # Mantle
+    foreground = "#f2d5cf"   # Rosewater
+    frame_color = "#e78284"  # Red
+    timeout = 0
+    fullscreen = show

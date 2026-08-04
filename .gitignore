@@ -1,0 +1,27 @@
+# Shell history & cache
+.zsh_history
+.python_history
+.bash_history
+.cache/
+
+# Credentials & Auth
+.ssh/
+.gnupg/
+.config/gh/hosts.yml
+*.pem
+*.key
+
+# Clash Verge VPN Subscription Server Secret File (keeps all custom rules & settings, ignores server tokens)
+RPJ7NUqSGvZM.yaml
+*.sqlite
+cache.db
+logs/
+
+# JetBrains runtime caches & tokens
+.config/JetBrains/*/
+!**/settings.json
+
+# System binary databases & temp files
+.config/dconf/
+*.tmp
+*.log
