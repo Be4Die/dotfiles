@@ -45,6 +45,20 @@ echo "[*] Applying profile: $HOST_TYPE"
 ln -sf "$DOTFILES_DIR/hypr/.config/hypr/hosts/${HOST_TYPE}.lua" "$DOTFILES_DIR/hypr/.config/hypr/host.lua"
 ln -sf "$DOTFILES_DIR/waybar/.config/waybar/hosts/${HOST_TYPE}.json" "$DOTFILES_DIR/waybar/.config/waybar/config"
 
+# Remove default CachyOS desktop bloat (noctua-shell) on fresh laptop install
+if [ "$HOST_TYPE" = "laptop" ]; then
+    if pacman -Qs "noctua-shell" &>/dev/null; then
+        echo "[*] Removing CachyOS default Noctua Shell bloat..."
+        sudo pacman -Rns --noconfirm noctua-shell cachyos-hyprland-settings 2>/dev/null || true
+    fi
+fi
+
+# Resolve qt6ct vs qt6ct-kde package conflict
+if pacman -Qs "^qt6ct$" &>/dev/null; then
+    echo "[*] Resolving package conflict: removing standard qt6ct in favor of qt6ct-kde..."
+    sudo pacman -Rdd --noconfirm qt6ct 2>/dev/null || true
+fi
+
 # 3. Package sync option
 if [ -f "$DOTFILES_DIR/pkglist/pkglist.txt" ]; then
     read -p "[?] Do you want to check and install missing official packages from pkglist.txt? (y/N): " -n 1 -r
