@@ -86,6 +86,8 @@ gst-plugin-pipewire
 gst-plugins-bad
 gst-plugins-ugly
 gthumb
+gvfs
+gvfs-mtp
 hdparm
 hwdetect
 hwinfo
