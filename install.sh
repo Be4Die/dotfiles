@@ -32,7 +32,7 @@ else
     echo "       Select Host Environment Profile Target         "
     echo "------------------------------------------------------"
     echo "1) Desktop (Dual Monitor, Nvidia GTX 1060, full effects)"
-    echo "2) MacBook Pro / Laptop (Retina 2880x1800, Intel iGPU, power save, touch gestures)"
+    echo "2) MacBook Pro / Laptop (Retina 2880x1800, AMD/Intel iGPU, power save, touch gestures)"
     read -p "[?] Choice [1/2, default=1]: " CHOICE
     if [ "$CHOICE" = "2" ]; then
         HOST_TYPE="laptop"
@@ -51,7 +51,14 @@ if [ -f "$DOTFILES_DIR/pkglist/pkglist.txt" ]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo "[*] Installing official pacman packages..."
-        sudo pacman -S --needed --noconfirm - < "$DOTFILES_DIR/pkglist/pkglist.txt" || true
+        if [ "$HOST_TYPE" = "laptop" ]; then
+            echo "[*] Laptop host detected: Filtering out Nvidia-specific drivers..."
+            grep -v -E "nvidia|cuda|egl-wayland" "$DOTFILES_DIR/pkglist/pkglist.txt" > /tmp/pkglist_laptop.txt
+            sudo pacman -S --needed --noconfirm - < /tmp/pkglist_laptop.txt || true
+            rm -f /tmp/pkglist_laptop.txt
+        else
+            sudo pacman -S --needed --noconfirm - < "$DOTFILES_DIR/pkglist/pkglist.txt" || true
+        fi
     fi
 fi
 
@@ -68,7 +75,13 @@ if [ -f "$DOTFILES_DIR/pkglist/aurpkglist.txt" ]; then
 
         if [ -n "$AUR_HELPER" ]; then
             echo "[*] Installing AUR packages using $AUR_HELPER..."
-            $AUR_HELPER -S --needed --noconfirm - < "$DOTFILES_DIR/pkglist/aurpkglist.txt" || true
+            if [ "$HOST_TYPE" = "laptop" ]; then
+                grep -v -E "nvidia|cuda|egl-wayland" "$DOTFILES_DIR/pkglist/aurpkglist.txt" > /tmp/aurpkglist_laptop.txt
+                $AUR_HELPER -S --needed --noconfirm - < /tmp/aurpkglist_laptop.txt || true
+                rm -f /tmp/aurpkglist_laptop.txt
+            else
+                $AUR_HELPER -S --needed --noconfirm - < "$DOTFILES_DIR/pkglist/aurpkglist.txt" || true
+            fi
         else
             echo "[!] No AUR helper (yay/paru) found. Please install AUR packages manually from pkglist/aurpkglist.txt."
         fi
