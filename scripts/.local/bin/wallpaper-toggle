@@ -43,8 +43,12 @@ apply_video_mode() {
 
     # Start mpvpaper on each connected monitor
     while IFS= read -r monitor; do
+        MPV_OPTS="no-audio --loop-file=inf"
+        if [[ "$monitor" == eDP* ]] || [[ "$(hostname)" == *"laptop"* ]]; then
+            MPV_OPTS="no-audio --loop-file=inf --panscan=1.0"
+        fi
         if [ -n "$H_MP4" ] && [ -f "$H_MP4" ]; then
-            mpvpaper -o "no-audio --loop-file=inf" "$monitor" "$H_MP4" &
+            mpvpaper -o "$MPV_OPTS" "$monitor" "$H_MP4" &
         fi
     done < <(get_monitors)
 

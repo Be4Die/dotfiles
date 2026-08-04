@@ -10,7 +10,7 @@ hl.monitor({
     output   = "eDP-1",
     mode     = "2880x1800@60",
     position = "0x0",
-    scale    = 1.7,
+    scale    = 1.6,
 })
 
 hl.monitor({
@@ -25,8 +25,8 @@ hl.monitor({
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
 
--- Intel Iris Pro iGPU Binding
-hl.env("AQ_DRM_DEVICES", "/dev/dri/card0")
+-- Вывод через разъем AMD, но рендеринг на холодном и экономичном Intel
+hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card0")
 
 
 ---------------------------------
@@ -56,7 +56,7 @@ hl.config({
         rounding_power = 2.0,
 
         active_opacity   = 1.0,
-        inactive_opacity = 0.98,
+        inactive_opacity = 1.0,
 
         shadow = {
             enabled = false,
