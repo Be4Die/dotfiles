@@ -131,12 +131,7 @@ hl.animation({ leaf = "workspacesIn",  enabled = true, speed = 4,  bezier = "eas
 hl.animation({ leaf = "workspacesOut", enabled = true, speed = 4,  bezier = "smoothOut",   style = "slidefade 15%" })
 
 
-------------------
----- GESTURES ----
-------------------
-
-hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
-
+-- NOTE: Gestures are defined per-host in hosts/laptop.lua and hosts/desktop.lua
 
 ------------------
 ---- DEVICES -----

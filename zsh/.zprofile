@@ -1,4 +1,4 @@
-source "/home/michael/emsdk/emsdk_env.sh"
+# emsdk — uncomment if installed: source "/home/michael/emsdk/emsdk_env.sh"
 
 
 # Added by Antigravity CLI installer

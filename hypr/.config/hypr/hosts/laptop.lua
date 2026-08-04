@@ -5,12 +5,12 @@ local colors = require("frappe")
 ---- MONITORS ----
 ------------------
 
--- Retina 15" (2880x1800@60 with 1.75 scale for comfortable UI size)
+-- Retina 15" (2880x1800@60 with 1.5 scale)
 hl.monitor({
     output   = "eDP-1",
     mode     = "2880x1800@60",
     position = "0x0",
-    scale    = 1.75,
+    scale    = 1.5,
 })
 
 hl.monitor({

@@ -17,6 +17,16 @@ if [ -f "$STATE_FILE" ]; then
     CURRENT_MODE=$(cat "$STATE_FILE")
 fi
 
+# Auto-detect connected monitors from Hyprland
+get_monitors() {
+    hyprctl monitors -j 2>/dev/null | python3 -c "
+import json, sys
+monitors = json.load(sys.stdin)
+for m in monitors:
+    print(m['name'])
+" 2>/dev/null || echo "eDP-1"
+}
+
 kill_all_renderers() {
     killall -9 mpvpaper hyprpaper linux-wallpaperengine 2>/dev/null || true
     sleep 0.2
@@ -24,19 +34,19 @@ kill_all_renderers() {
 
 apply_video_mode() {
     kill_all_renderers
-    
+
     H_MP4="$WALLPAPER_DIR/h_${INDEX}.mp4"
     V_MP4="$WALLPAPER_DIR/v_${INDEX}.mp4"
 
     [ ! -f "$H_MP4" ] && H_MP4=$(ls "$WALLPAPER_DIR"/h_*.mp4 2>/dev/null | head -n 1)
     [ ! -f "$V_MP4" ] && V_MP4=$(ls "$WALLPAPER_DIR"/v_*.mp4 2>/dev/null | head -n 1)
 
-    if [ -n "$H_MP4" ] && [ -f "$H_MP4" ]; then
-        mpvpaper -o "no-audio --loop-file=inf" HDMI-A-1 "$H_MP4" &
-    fi
-    if [ -n "$V_MP4" ] && [ -f "$V_MP4" ]; then
-        mpvpaper -o "no-audio --loop-file=inf" DVI-D-1 "$V_MP4" &
-    fi
+    # Start mpvpaper on each connected monitor
+    while IFS= read -r monitor; do
+        if [ -n "$H_MP4" ] && [ -f "$H_MP4" ]; then
+            mpvpaper -o "no-audio --loop-file=inf" "$monitor" "$H_MP4" &
+        fi
+    done < <(get_monitors)
 
     echo "video" > "$STATE_FILE"
     notify-send -a "Wallpaper" -i video-display "Wallpaper Mode" "Switched to Animated Video (mpvpaper)" 2>/dev/null || true
@@ -49,32 +59,27 @@ apply_static_mode() {
     [ ! -f "$H_IMG" ] && H_IMG="$WALLPAPER_DIR/h_${INDEX}.jpg"
     [ ! -f "$H_IMG" ] && H_IMG=$(ls "$WALLPAPER_DIR"/h_*.png "$WALLPAPER_DIR"/h_*.jpg 2>/dev/null | head -n 1)
 
-    V_IMG="$WALLPAPER_DIR/v_${INDEX}.png"
-    [ ! -f "$V_IMG" ] && V_IMG="$WALLPAPER_DIR/v_${INDEX}.jpg"
-    [ ! -f "$V_IMG" ] && V_IMG=$(ls "$WALLPAPER_DIR"/v_*.png "$WALLPAPER_DIR"/v_*.jpg 2>/dev/null | head -n 1)
-
     HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
-    cat <<EOF > "$HYPRPAPER_CONF"
-splash = false
 
-wallpaper {
-    monitor = HDMI-A-1
-    path = $H_IMG
-    fit_mode = cover
-}
-
-wallpaper {
-    monitor = DVI-D-1
-    path = $V_IMG
-    fit_mode = cover
-}
-
-wallpaper {
-    monitor =
-    path = $H_IMG
-    fit_mode = cover
-}
-EOF
+    # Build hyprpaper.conf dynamically for all connected monitors
+    {
+        echo "splash = false"
+        echo ""
+        while IFS= read -r monitor; do
+            echo "wallpaper {"
+            echo "    monitor = $monitor"
+            echo "    path = $H_IMG"
+            echo "    fit_mode = cover"
+            echo "}"
+            echo ""
+        done < <(get_monitors)
+        # Fallback: catch-all monitor entry
+        echo "wallpaper {"
+        echo "    monitor ="
+        echo "    path = $H_IMG"
+        echo "    fit_mode = cover"
+        echo "}"
+    } > "$HYPRPAPER_CONF"
 
     hyprpaper &
 

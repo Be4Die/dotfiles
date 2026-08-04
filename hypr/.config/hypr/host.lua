@@ -1,1 +1,1 @@
-hosts/desktop.lua
+hosts/laptop.lua
