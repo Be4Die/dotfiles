@@ -146,6 +146,12 @@ if [ -f "$DOTFILES_DIR/sddm/etc/sddm.conf.d/90-theme.conf" ]; then
     sudo cp "$DOTFILES_DIR/sddm/etc/sddm.conf.d/90-theme.conf" /etc/sddm.conf.d/90-theme.conf
 fi
 
+if [ -f "$DOTFILES_DIR/sddm/etc/sddm.conf.d/hidpi.conf" ]; then
+    echo "[*] Setting up SDDM HiDPI configuration..."
+    sudo mkdir -p /etc/sddm.conf.d
+    sudo cp "$DOTFILES_DIR/sddm/etc/sddm.conf.d/hidpi.conf" /etc/sddm.conf.d/hidpi.conf
+fi
+
 # 6. JetBrains Helper Script Execution
 if [ -f "$HOME_DIR/jetbra/scripts/install.sh" ]; then
     echo "[*] Initializing JetBrains VM options helper (jetbra)..."
