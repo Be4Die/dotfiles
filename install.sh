@@ -102,7 +102,7 @@ if [ -f "$DOTFILES_DIR/pkglist/aurpkglist.txt" ]; then
     fi
 fi
 
-# 4. Stow Packages Execution
+# 4. Stow Packages Execution with Conflict Adoption
 PACKAGES=(
     "alacritty"
     "autostart"
@@ -132,9 +132,12 @@ cd "$DOTFILES_DIR"
 for pkg in "${PACKAGES[@]}"; do
     if [ -d "$DOTFILES_DIR/$pkg" ]; then
         echo "  -> Stowing $pkg..."
-        stow -R -v -t "$HOME_DIR" "$pkg"
+        stow --adopt -R -v -t "$HOME_DIR" "$pkg" || true
     fi
 done
+
+# Ensure dotfiles repo files are clean after adopt
+git checkout .
 
 # 5. SDDM Theme Setup
 if [ -f "$DOTFILES_DIR/sddm/etc/sddm.conf.d/90-theme.conf" ]; then
@@ -160,6 +163,11 @@ if [ -d "$CLASH_PROFILE_DIR" ] && [ ! -f "$CLASH_PROFILE_DIR/RPJ7NUqSGvZM.yaml" 
         curl -sL "$SUB_URL" -o "$CLASH_PROFILE_DIR/RPJ7NUqSGvZM.yaml" || true
         echo "[+] Subscription saved to $CLASH_PROFILE_DIR/RPJ7NUqSGvZM.yaml"
     fi
+fi
+
+# 8. Reload Hyprland if running
+if command -v hyprctl &>/dev/null; then
+    hyprctl reload 2>/dev/null || true
 fi
 
 echo "======================================================"
