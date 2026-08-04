@@ -53,6 +53,7 @@ window#waybar {
 #pulseaudio,
 #bluetooth,
 #network,
+#battery,
 #tray {
     background-color: @mantle;
     border-radius: 9999px;
@@ -136,6 +137,18 @@ window#waybar {
     color: @sapphire;
 }
 #network.disconnected {
+    color: @red;
+}
+#battery {
+    color: @green;
+}
+#battery.charging, #battery.plugged {
+    color: @peach;
+}
+#battery.warning {
+    color: @yellow;
+}
+#battery.critical:not(.charging) {
     color: @red;
 }
 

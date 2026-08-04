@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Dotfiles Unified Entry Point Bootstrap Script
+# Dotfiles Unified Entry Point Bootstrap Script (Multi-Host Enabled)
 # Usage: ./install.sh
 #
 
@@ -20,7 +20,32 @@ if ! command -v stow &>/dev/null; then
     sudo pacman -S --noconfirm stow
 fi
 
-# 2. Package sync option
+# 2. Host Profile Detection & Selection
+HOSTNAME_CURRENT="$(hostname 2>/dev/null || cat /etc/hostname 2>/dev/null || echo "")"
+HOST_TYPE=""
+
+if [ "$HOSTNAME_CURRENT" = "cachyos-pc" ]; then
+    echo "[*] Auto-detected hostname: $HOSTNAME_CURRENT -> Desktop Profile"
+    HOST_TYPE="desktop"
+else
+    echo "------------------------------------------------------"
+    echo "       Select Host Environment Profile Target         "
+    echo "------------------------------------------------------"
+    echo "1) Desktop (Dual Monitor, Nvidia GTX 1060, full effects)"
+    echo "2) MacBook Pro / Laptop (Retina 2880x1800, Intel iGPU, power save, touch gestures)"
+    read -p "[?] Choice [1/2, default=1]: " CHOICE
+    if [ "$CHOICE" = "2" ]; then
+        HOST_TYPE="laptop"
+    else
+        HOST_TYPE="desktop"
+    fi
+fi
+
+echo "[*] Applying profile: $HOST_TYPE"
+ln -sf "$DOTFILES_DIR/hypr/.config/hypr/hosts/${HOST_TYPE}.lua" "$DOTFILES_DIR/hypr/.config/hypr/host.lua"
+ln -sf "$DOTFILES_DIR/waybar/.config/waybar/hosts/${HOST_TYPE}.json" "$DOTFILES_DIR/waybar/.config/waybar/config"
+
+# 3. Package sync option
 if [ -f "$DOTFILES_DIR/pkglist/pkglist.txt" ]; then
     read -p "[?] Do you want to check and install missing official packages from pkglist.txt? (y/N): " -n 1 -r
     echo
@@ -50,7 +75,7 @@ if [ -f "$DOTFILES_DIR/pkglist/aurpkglist.txt" ]; then
     fi
 fi
 
-# 3. Stow Packages Execution
+# 4. Stow Packages Execution
 PACKAGES=(
     "alacritty"
     "autostart"
@@ -84,20 +109,20 @@ for pkg in "${PACKAGES[@]}"; do
     fi
 done
 
-# 4. SDDM Theme Setup
+# 5. SDDM Theme Setup
 if [ -f "$DOTFILES_DIR/sddm/etc/sddm.conf.d/90-theme.conf" ]; then
     echo "[*] Setting up SDDM theme configuration..."
     sudo mkdir -p /etc/sddm.conf.d
     sudo cp "$DOTFILES_DIR/sddm/etc/sddm.conf.d/90-theme.conf" /etc/sddm.conf.d/90-theme.conf
 fi
 
-# 5. JetBrains Helper Script Execution
+# 6. JetBrains Helper Script Execution
 if [ -f "$HOME_DIR/jetbra/scripts/install.sh" ]; then
     echo "[*] Initializing JetBrains VM options helper (jetbra)..."
     bash "$HOME_DIR/jetbra/scripts/install.sh" || true
 fi
 
-# 6. Clash Verge Subscription Check
+# 7. Clash Verge Subscription Check
 CLASH_PROFILE_DIR="$HOME_DIR/.local/share/io.github.clash-verge-rev.clash-verge-rev/profiles"
 if [ -d "$CLASH_PROFILE_DIR" ] && [ ! -f "$CLASH_PROFILE_DIR/RPJ7NUqSGvZM.yaml" ]; then
     echo "------------------------------------------------------"

@@ -1,23 +1,13 @@
 local colors = require("frappe")
 
-------------------
----- MONITORS ----
-------------------
+---------------------------------
+---- HOST-SPECIFIC CONFIG (LUA) ----
+---------------------------------
 
-hl.monitor({
-    output   = "HDMI-A-1",
-    mode     = "preferred",
-    position = "1080x420",
-    scale    = 1,
-})
-
-hl.monitor({
-    output   = "DVI-D-1",
-    mode     = "1920x1080@60",
-    position = "0x0",
-    scale    = 1,
-    transform = 1,
-})
+local host_ok, host = pcall(require, "host")
+if not host_ok then
+    pcall(require, "hosts.desktop")
+end
 
 
 ---------------------
@@ -41,17 +31,13 @@ hl.on("hyprland.start", function()
 end)
 
 
--------------------------------
----- ENVIRONMENT VARIABLES ----
--------------------------------
+-------------------------------------
+---- COMMON ENVIRONMENT VARIABLES ----
+-------------------------------------
 
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("LIBVA_DRIVER_NAME", "nvidia")
 hl.env("XDG_SESSION_TYPE", "wayland")
-hl.env("GBM_BACKEND", "nvidia-drm")
-hl.env("WLR_RENDERER_ALLOW_SOFTWARE", "1")
-hl.env("NVD_BACKEND", "direct")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_STYLE_OVERRIDE", "kvantum")
 
@@ -75,29 +61,6 @@ hl.config({
         resize_on_border = true,
         allow_tearing    = false,
         layout           = "dwindle",
-    },
-
-    decoration = {
-        rounding       = 12,
-        rounding_power = 2.0,
-
-        active_opacity   = 1.0,
-        inactive_opacity = 0.95,
-
-        shadow = {
-            enabled      = true,
-            range        = 8,
-            render_power = 3,
-            color        = "rgba(" .. colors.crustAlpha .. "ee)",
-        },
-
-        blur = {
-            enabled           = true,
-            size              = 8,
-            passes            = 3,
-            vibrancy          = 0.1696,
-            vibrancy_darkness = 0.5,
-        },
     },
 
     animations = {
