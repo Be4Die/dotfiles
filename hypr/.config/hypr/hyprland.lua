@@ -4,9 +4,17 @@ local colors = require("frappe")
 ---- HOST-SPECIFIC CONFIG (LUA) ----
 ---------------------------------
 
-local host_ok, host = pcall(require, "host")
-if not host_ok then
+local handle = io.popen("hostname 2>/dev/null || cat /etc/hostname 2>/dev/null")
+local hostname = handle and handle:read("*a"):gsub("%s+", "") or ""
+if handle then handle:close() end
+
+if hostname == "cachyos-pc" then
     pcall(require, "hosts.desktop")
+else
+    local host_ok, host = pcall(require, "host")
+    if not host_ok then
+        pcall(require, "hosts.laptop")
+    end
 end
 
 

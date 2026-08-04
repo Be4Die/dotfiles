@@ -25,3 +25,7 @@ logs/
 .config/dconf/
 *.tmp
 *.log
+
+# Host-specific generated symlinks
+hypr/.config/hypr/host.lua
+waybar/.config/waybar/config
