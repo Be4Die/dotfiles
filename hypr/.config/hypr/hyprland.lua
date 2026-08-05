@@ -218,6 +218,14 @@ hl.bind("F1",                    hl.dsp.exec_cmd("/usr/local/bin/change-brightne
 hl.bind("code:233",              hl.dsp.exec_cmd("/usr/local/bin/change-brightness + 5%"))
 hl.bind("code:232",              hl.dsp.exec_cmd("/usr/local/bin/change-brightness - 5%"))
 
+-- Apple Keyboard F3 (Mission Control) -> Round-robin Window Cycle (Tiled -> Maximized -> Floating)
+hl.bind("XF86LaunchA",           hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
+hl.bind("XF86Explorer",          hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
+
+-- Apple Keyboard F4 (Launchpad) -> Wofi App Launcher
+hl.bind("XF86LaunchB",           hl.dsp.exec_cmd(menu))
+hl.bind("XF86Search",            hl.dsp.exec_cmd(menu))
+
 hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("brightnessctl --device='*kbd*' set 5%+"))
 hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("brightnessctl --device='*kbd*' set 5%-"))
 
