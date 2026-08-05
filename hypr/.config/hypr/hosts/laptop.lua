@@ -46,11 +46,10 @@ hl.config({
             natural_scroll = true,
         },
     },
-    gestures = {
-        workspace_swipe = true,
-        workspace_swipe_fingers = 3,
-    },
 })
+
+-- 3-Finger Touchpad Workspace Swipe Gesture
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 
 
 --------------------------------------------
