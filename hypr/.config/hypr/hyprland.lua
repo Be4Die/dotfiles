@@ -205,6 +205,11 @@ hl.bind(mainMod .. " + PRINT",         hl.dsp.exec_cmd("hyprshot -m window"))
 hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m output"))
 hl.bind("CTRL + PRINT",            hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
 
+-- macOS-style screenshot bindings (ALT + SHIFT + 3/4/5 to avoid conflict with moving windows to workspaces)
+hl.bind("ALT + SHIFT + 3", hl.dsp.exec_cmd("hyprshot -m output"))
+hl.bind("ALT + SHIFT + 4", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
+hl.bind("ALT + SHIFT + 5", hl.dsp.exec_cmd("hyprshot -m window"))
+
 -- Media & Hardware Keys (Volume, Brightness, Keyboard Backlight, Player)
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"))
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
