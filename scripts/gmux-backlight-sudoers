@@ -1,0 +1,1 @@
+michael ALL=(root) NOPASSWD: /usr/local/bin/unlock-gmux

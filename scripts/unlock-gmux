@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/bin/setpci -H1 -s 00:01.00 BRIDGE_CONTROL=0

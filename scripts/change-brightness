@@ -1,0 +1,13 @@
+#!/bin/bash
+DIR="$1"
+STEP="${2:-5%}"
+
+# Force unlock GMUX I/O ports before writing (in case vgaarb reset it)
+sudo /usr/local/bin/unlock-gmux
+
+for dev in /sys/class/backlight/*; do
+    if [ -e "$dev/brightness" ]; then
+        bname="$(basename "$dev")"
+        brightnessctl -d "$bname" set "${STEP}${DIR}" 2>/dev/null
+    fi
+done
