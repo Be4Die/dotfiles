@@ -21,10 +21,14 @@ fi
 get_monitors() {
     hyprctl monitors -j 2>/dev/null | python3 -c "
 import json, sys
-monitors = json.load(sys.stdin)
-for m in monitors:
-    print(m['name'])
-" 2>/dev/null || echo "eDP-1"
+try:
+    monitors = json.load(sys.stdin)
+    for m in monitors:
+        is_vert = '1' if m.get('transform', 0) in (1, 3) or m.get('height', 0) > m.get('width', 0) else '0'
+        print(f\"{m['name']}:{is_vert}\")
+except:
+    print('eDP-1:0')
+" 2>/dev/null || echo "eDP-1:0"
 }
 
 kill_all_renderers() {
@@ -42,13 +46,19 @@ apply_video_mode() {
     [ ! -f "$V_MP4" ] && V_MP4=$(ls "$WALLPAPER_DIR"/v_*.mp4 2>/dev/null | head -n 1)
 
     # Start mpvpaper on each connected monitor
-    while IFS= read -r monitor; do
+    while IFS=':' read -r monitor is_vert; do
         MPV_OPTS="no-audio --loop-file=inf"
         if [[ "$monitor" == eDP* ]] || [[ "$(hostname)" == *"laptop"* ]]; then
             MPV_OPTS="no-audio --loop-file=inf --panscan=1.0"
         fi
-        if [ -n "$H_MP4" ] && [ -f "$H_MP4" ]; then
-            mpvpaper -o "$MPV_OPTS" "$monitor" "$H_MP4" &
+        
+        SELECTED_MP4="$H_MP4"
+        if [ "$is_vert" = "1" ] && [ -n "$V_MP4" ] && [ -f "$V_MP4" ]; then
+            SELECTED_MP4="$V_MP4"
+        fi
+        
+        if [ -n "$SELECTED_MP4" ] && [ -f "$SELECTED_MP4" ]; then
+            mpvpaper -o "$MPV_OPTS" "$monitor" "$SELECTED_MP4" &
         fi
     done < <(get_monitors)
 
@@ -63,16 +73,25 @@ apply_static_mode() {
     [ ! -f "$H_IMG" ] && H_IMG="$WALLPAPER_DIR/h_${INDEX}.jpg"
     [ ! -f "$H_IMG" ] && H_IMG=$(ls "$WALLPAPER_DIR"/h_*.png "$WALLPAPER_DIR"/h_*.jpg 2>/dev/null | head -n 1)
 
+    V_IMG="$WALLPAPER_DIR/v_${INDEX}.png"
+    [ ! -f "$V_IMG" ] && V_IMG="$WALLPAPER_DIR/v_${INDEX}.jpg"
+    [ ! -f "$V_IMG" ] && V_IMG=$(ls "$WALLPAPER_DIR"/v_*.png "$WALLPAPER_DIR"/v_*.jpg 2>/dev/null | head -n 1)
+
     HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
 
     # Build hyprpaper.conf dynamically for all connected monitors
     {
         echo "splash = false"
         echo ""
-        while IFS= read -r monitor; do
+        while IFS=':' read -r monitor is_vert; do
+            SELECTED_IMG="$H_IMG"
+            if [ "$is_vert" = "1" ] && [ -n "$V_IMG" ] && [ -f "$V_IMG" ]; then
+                SELECTED_IMG="$V_IMG"
+            fi
+            
             echo "wallpaper {"
             echo "    monitor = $monitor"
-            echo "    path = $H_IMG"
+            echo "    path = $SELECTED_IMG"
             echo "    fit_mode = cover"
             echo "}"
             echo ""
