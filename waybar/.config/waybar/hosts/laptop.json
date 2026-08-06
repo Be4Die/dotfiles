@@ -54,7 +54,7 @@
         "format-ethernet": "󰈀  {ipaddr}",
         "format-disconnected": "󰤮  Offline",
         "tooltip-format": "{ifname} via {gwaddr}",
-        "on-click": "alacritty -e nmtui"
+        "on-click": "nm-connection-editor"
     },
 
     "battery": {
@@ -68,7 +68,7 @@
         "format-plugged": " {capacity}%",
         "format-alt": "{time} {icon}",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "on-click": "alacritty -e btop"
+        "on-click": "gnome-power-statistics"
     },
 
     "cpu": {
