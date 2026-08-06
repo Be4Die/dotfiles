@@ -53,16 +53,47 @@ RemainAfterExit=yes
 WantedBy=sysinit.target
 ```
 
+### 6. Вторая проблема: Динамический сброс PCI от vgaarb
+После того как драйвер `apple_gmux` успешно проинициализировался при загрузке, выяснилось, что при запуске графического сервера (Wayland/X11), ядро (подсистема `vgaarb` — VGA Arbiter) заново переоценивает маршрутизацию VGA и **снова включает флаг VGA Forwarding (`0008`) на мосту AMD**. 
+Из-за этого порты снова блокировались, и регулировка переставала работать прямо во время работы системы.
+
+**Решение:** Мы модифицировали скрипт `change-brightness`, чтобы он принудительно открывал мост перед каждой регулировкой яркости. Чтобы это работало без запроса пароля, мы создали точечное правило в `sudoers`:
+
+1. Создан хелпер `/usr/local/bin/unlock-gmux`:
+```bash
+#!/bin/bash
+/usr/bin/setpci -H1 -s 00:01.00 BRIDGE_CONTROL=0
+```
+2. Создано правило `/etc/sudoers.d/gmux-backlight`:
+```text
+michael ALL=(root) NOPASSWD: /usr/local/bin/unlock-gmux
+```
+
 ### Настройка управления (Горячие клавиши)
-Для удобного управления был написан скрипт `/usr/local/bin/change-brightness`, который напрямую записывает новые значения в `/sys/class/backlight/gmux_backlight/brightness`.
+Скрипт `/usr/local/bin/change-brightness` (сохранён в `dotfiles/scripts/change-brightness`) был обновлён:
+```bash
+#!/bin/bash
+DIR="$1"
+STEP="${2:-5%}"
+
+# Принудительно открываем порты (если vgaarb их закрыл)
+sudo /usr/local/bin/unlock-gmux
+
+for dev in /sys/class/backlight/*; do
+    if [ -e "$dev/brightness" ]; then
+        bname="$(basename "$dev")"
+        brightnessctl -d "$bname" set "${STEP}${DIR}" 2>/dev/null
+    fi
+done
+```
 
 В конфигурацию Hyprland (`hyprland.lua`) добавлены бинды для стандартных кнопок MacBook:
 ```lua
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("/usr/local/bin/change-brightness + 5%"))
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("/usr/local/bin/change-brightness - 5%"))
-hl.bind("F2",                    hl.dsp.exec_cmd("/usr/local/bin/change-brightness + 5%"))
-hl.bind("F1",                    hl.dsp.exec_cmd("/usr/local/bin/change-brightness - 5%"))
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("/home/michael/dotfiles/scripts/change-brightness + 5%"))
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("/home/michael/dotfiles/scripts/change-brightness - 5%"))
+hl.bind("F2",                    hl.dsp.exec_cmd("/home/michael/dotfiles/scripts/change-brightness + 5%"))
+hl.bind("F1",                    hl.dsp.exec_cmd("/home/michael/dotfiles/scripts/change-brightness - 5%"))
 ```
 
 ### Итог
-Подсветка регулируется аппаратно (меняется мощность питания матрицы, что экономит батарею). Система надежно инициализирует чип Apple GMUX при каждой перезагрузке благодаря очень раннему патчу шины PCI. Никакие программные фильтры или костыли с гаммой больше не используются.
+Подсветка регулируется аппаратно (меняется мощность питания матрицы, что экономит батарею). Система надежно инициализирует чип Apple GMUX при загрузке (через systemd-сервис), а скрипт с `sudoers` гарантирует, что I/O порты открыты в момент изменения яркости, обходя любые динамические сбросы от драйверов видеокарт. Никакие программные фильтры или костыли с гаммой больше не используются.
