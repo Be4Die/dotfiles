@@ -118,17 +118,33 @@ case "$TARGET_MODE" in
         apply_static_mode
         ;;
     init|daemon)
-        if [ "$CURRENT_MODE" = "static" ]; then
+        if [[ "$(hostname)" == *"laptop"* ]]; then
+            INDEX=$(cat "$HOME/.cache/wallpaper_index" 2>/dev/null || echo 1)
             apply_static_mode
         else
-            apply_video_mode
+            if [ "$CURRENT_MODE" = "static" ]; then
+                apply_static_mode
+            else
+                apply_video_mode
+            fi
         fi
         ;;
     *)
-        if [ "$CURRENT_MODE" = "video" ]; then
+        if [[ "$(hostname)" == *"laptop"* ]]; then
+            CURRENT_INDEX=$(cat "$HOME/.cache/wallpaper_index" 2>/dev/null || echo 1)
+            TOTAL_PICS=$(ls -1 "$WALLPAPER_DIR"/h_*.{png,jpg} 2>/dev/null | wc -l)
+            if [ "$TOTAL_PICS" -gt 0 ]; then
+                NEXT_INDEX=$(( (CURRENT_INDEX % TOTAL_PICS) + 1 ))
+                echo "$NEXT_INDEX" > "$HOME/.cache/wallpaper_index"
+                INDEX="$NEXT_INDEX"
+            fi
             apply_static_mode
         else
-            apply_video_mode
+            if [ "$CURRENT_MODE" = "video" ]; then
+                apply_static_mode
+            else
+                apply_video_mode
+            fi
         fi
         ;;
 esac
