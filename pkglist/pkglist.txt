@@ -244,3 +244,4 @@ xfsprogs
 xl2tpd
 xorg-xwayland
 zip
+wlogout

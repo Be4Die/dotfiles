@@ -121,6 +121,7 @@ PACKAGES=(
     "scripts"
     "wallpapers"
     "waybar"
+    "wlogout"
     "wofi"
     "zed"
     "zsh"
