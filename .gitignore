@@ -11,8 +11,14 @@
 *.pem
 *.key
 
-# Clash Verge VPN Subscription Server Secret File (keeps all custom rules & settings, ignores server tokens)
-RPJ7NUqSGvZM.yaml
+# VPN Clients, Profiles & Secret Keys
+.config/koala-clash/
+.config/clash/
+.config/mihomo/
+.config/io.github.clash-verge-rev.clash-verge-rev/
+.local/share/io.github.clash-verge-rev.clash-verge-rev/
+clash-verge/
+koala-clash/
 *.sqlite
 cache.db
 logs/
@@ -31,7 +37,5 @@ hypr/.config/hypr/host.lua
 waybar/.config/waybar/config
 
 # Dynamically generated files
-clash-verge/.local/share/io.github.clash-verge-rev.clash-verge-rev/config.yaml
-clash-verge/.local/share/io.github.clash-verge-rev.clash-verge-rev/profiles.yaml
 hypr/.config/hypr/hyprpaper.conf
 gtk/.config/gtk-4.0/

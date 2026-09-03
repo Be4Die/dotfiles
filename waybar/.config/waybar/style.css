@@ -28,7 +28,7 @@
 
 * {
     font-family: "JetBrainsMono Nerd Font", sans-serif;
-    font-size: 12.5px; /* уменьшил для компактности */
+    font-size: 11px;
     font-weight: 500;
     min-height: 0;
     border: none;
@@ -57,7 +57,7 @@ window#waybar {
 #tray {
     background-color: @mantle;
     border-radius: 9999px;
-    padding: 0 10px;
+    padding: 0 8px;
     margin: 0 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }

@@ -11,9 +11,9 @@ fi
 HOSTNAME=$(hostname)
 
 if [ "$HOSTNAME" = "cachyos-laptop" ]; then
-    # Laptop: 3 buttons (Suspend, Shutdown, Reboot)
-    # Margins tuned for 3 buttons to make them square
-    wlogout -b 3 -c 40 -r 40 -T 350 -B 350 -L 200 -R 200 --layout ~/.config/wlogout/layout_laptop --css ~/.config/wlogout/style.css
+    # Laptop: 4 buttons (Lock, Suspend, Reboot, Shutdown)
+    # Margins tuned for 4 buttons to make them square
+    wlogout -b 4 -c 30 -r 30 -T 350 -B 350 -L 120 -R 120 --layout ~/.config/wlogout/layout_laptop --css ~/.config/wlogout/style.css
 else
     # PC: 2 buttons (Shutdown, Reboot)
     # Margins tuned for 2 buttons to make them square (larger side margins)

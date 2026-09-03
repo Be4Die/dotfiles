@@ -5,12 +5,12 @@ local colors = require("frappe")
 ---- MONITORS ----
 ------------------
 
--- Retina 15" (2880x1800@60 with 1.7 scale)
+-- Retina 15" (2880x1800@60 with native 2.0 integer Retina scale)
 hl.monitor({
     output   = "eDP-1",
     mode     = "2880x1800@60",
     position = "0x0",
-    scale    = 1.6,
+    scale    = 2,
 })
 
 hl.monitor({
@@ -25,8 +25,11 @@ hl.monitor({
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
 
--- Вывод через разъем AMD, но рендеринг на холодном и экономичном Intel
-hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card0")
+-- Hardware video acceleration & Wayland optimizations
+hl.env("MOZ_ENABLE_WAYLAND", "1")
+hl.env("LIBVA_DRIVER_NAME", "radeonsi")
+hl.env("VDPAU_DRIVER", "radeonsi")
+hl.env("mesa_glthread", "true")
 
 -- Fix blurry text in XWayland apps (ONLYOFFICE, Steam, etc.) on Retina display with fractional scaling
 hl.config({

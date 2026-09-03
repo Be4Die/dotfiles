@@ -132,6 +132,7 @@ mission-center
 mkinitcpio
 modemmanager
 mpvpaper
+msr-tools
 mtools
 nano
 nano-syntax-highlighting
