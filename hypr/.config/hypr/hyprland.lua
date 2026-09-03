@@ -38,15 +38,16 @@ hl.on("hyprland.start", function()
         hl.exec_cmd("dunst -conf ~/.config/dunst/hosts/desktop.conf")
         hl.exec_cmd("waybar -c ~/.config/waybar/hosts/desktop.json -s ~/.config/waybar/hosts/desktop.css")
         hl.exec_cmd("gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 11'")
+        hl.exec_cmd("/opt/Koala.Clash/koala-clash")
     else
         hl.exec_cmd("dunst -conf ~/.config/dunst/hosts/laptop.conf")
         hl.exec_cmd("waybar -c ~/.config/waybar/hosts/laptop.json -s ~/.config/waybar/hosts/laptop.css")
         hl.exec_cmd("gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 10.5'")
+        hl.exec_cmd("env GDK_SCALE=2 WEBKIT_DISABLE_DMABUF_RENDERER=1 /opt/Koala.Clash/koala-clash")
     end
 
     hl.exec_cmd("wallpaper-toggle init")
     hl.exec_cmd("nm-applet --indicator")
-    hl.exec_cmd("koala-clash")
     hl.exec_cmd("blueman-applet")
     hl.exec_cmd("hyprctl setcursor macOS 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme macOS")
