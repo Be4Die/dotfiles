@@ -33,10 +33,18 @@ local menu        = "wofi --conf ~/.config/wofi/program-menu/config --style ~/.c
 
 hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
-    hl.exec_cmd("dunst")
-    hl.exec_cmd("hypridle")
+
+    if hostname == "cachyos-pc" then
+        hl.exec_cmd("dunst -conf ~/.config/dunst/hosts/desktop.conf")
+        hl.exec_cmd("waybar -c ~/.config/waybar/hosts/desktop.json -s ~/.config/waybar/hosts/desktop.css")
+        hl.exec_cmd("gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 11'")
+    else
+        hl.exec_cmd("dunst -conf ~/.config/dunst/hosts/laptop.conf")
+        hl.exec_cmd("waybar -c ~/.config/waybar/hosts/laptop.json -s ~/.config/waybar/hosts/laptop.css")
+        hl.exec_cmd("gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 10.5'")
+    end
+
     hl.exec_cmd("wallpaper-toggle init")
-    hl.exec_cmd("waybar")
     hl.exec_cmd("nm-applet --indicator")
     hl.exec_cmd("koala-clash")
     hl.exec_cmd("blueman-applet")

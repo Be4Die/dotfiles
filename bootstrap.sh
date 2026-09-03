@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 #
 # Dotfiles Unified Entry Point Bootstrap Script (Multi-Host Enabled)
-# Usage: ./install.sh
+# ATTENTION: This script is intended ONLY for initial system bootstrapping on fresh installs.
+# DO NOT run this on an already configured system during normal synchronization.
+# Usage: ./bootstrap.sh
 #
 
 set -e
@@ -10,7 +12,7 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOME_DIR="$HOME"
 
 echo "======================================================"
-echo "         Deploying Dotfiles via GNU Stow              "
+echo "    Initial System Bootstrap via GNU Stow (FRESH ONLY)"
 echo "======================================================"
 echo "Root directory: $DOTFILES_DIR"
 
@@ -44,6 +46,8 @@ fi
 echo "[*] Applying profile: $HOST_TYPE"
 ln -sf "$DOTFILES_DIR/hypr/.config/hypr/hosts/${HOST_TYPE}.lua" "$DOTFILES_DIR/hypr/.config/hypr/host.lua"
 ln -sf "$DOTFILES_DIR/waybar/.config/waybar/hosts/${HOST_TYPE}.json" "$DOTFILES_DIR/waybar/.config/waybar/config"
+ln -sf "$DOTFILES_DIR/alacritty/.config/alacritty/hosts/${HOST_TYPE}.toml" "$DOTFILES_DIR/alacritty/.config/alacritty/local.toml"
+ln -sf "$DOTFILES_DIR/zed/.config/zed/hosts/${HOST_TYPE}.json" "$DOTFILES_DIR/zed/.config/zed/settings.json"
 
 # Remove default CachyOS desktop bloat (noctua-shell) on fresh laptop install
 if [ "$HOST_TYPE" = "laptop" ]; then
@@ -147,8 +151,8 @@ if [ -f "$DOTFILES_DIR/sddm/etc/sddm.conf.d/90-theme.conf" ]; then
     sudo cp "$DOTFILES_DIR/sddm/etc/sddm.conf.d/90-theme.conf" /etc/sddm.conf.d/90-theme.conf
 fi
 
-if [ -f "$DOTFILES_DIR/sddm/etc/sddm.conf.d/hidpi.conf" ]; then
-    echo "[*] Setting up SDDM HiDPI configuration..."
+if [ "$HOST_TYPE" = "laptop" ] && [ -f "$DOTFILES_DIR/sddm/etc/sddm.conf.d/hidpi.conf" ]; then
+    echo "[*] Laptop detected: Setting up SDDM HiDPI configuration..."
     sudo mkdir -p /etc/sddm.conf.d
     sudo cp "$DOTFILES_DIR/sddm/etc/sddm.conf.d/hidpi.conf" /etc/sddm.conf.d/hidpi.conf
 fi

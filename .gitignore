@@ -35,6 +35,9 @@ logs/
 # Host-specific generated symlinks
 hypr/.config/hypr/host.lua
 waybar/.config/waybar/config
+alacritty/.config/alacritty/local.toml
+zed/.config/zed/settings.json
+dunst/.config/dunst/dunstrc
 
 # Dynamically generated files
 hypr/.config/hypr/hyprpaper.conf

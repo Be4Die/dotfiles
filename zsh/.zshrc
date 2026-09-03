@@ -24,4 +24,15 @@ export PATH="$PATH:$HOME/go/bin"
 export PATH="/home/michael/.local/bin:$PATH"
 ___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi
 
-export PATH="$PATH:$HOME/.dotnet/tools"
+# .NET tools
+[[ -d "$HOME/.dotnet/tools" ]] && export PATH="$PATH:$HOME/.dotnet/tools"
+
+# Default browser
+export BROWSER=firefox
+
+# NVIDIA CUDA (Desktop PC)
+if [[ -d "/opt/cuda-11.8" ]]; then
+    export CUDA_HOME="/opt/cuda-11.8"
+    export PATH="$CUDA_HOME/bin:$PATH"
+    export LD_LIBRARY_PATH="$CUDA_HOME/targets/x86_64-linux/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+fi

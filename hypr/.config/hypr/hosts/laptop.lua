@@ -83,3 +83,11 @@ hl.config({
 -------------------------
 
 hl.bind("SUPER + P", hl.dsp.exec_cmd("~/dotfiles/scripts/toggle-mirror.sh"))
+
+---------------------------
+---- LAPTOP AUTOSTART -----
+---------------------------
+
+hl.on("hyprland.start", function()
+    hl.exec_cmd("hypridle")
+end)

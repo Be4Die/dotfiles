@@ -1,0 +1,20 @@
+@import "../style.css";
+
+* {
+    font-size: 11px;
+}
+
+#workspaces,
+#window,
+#clock,
+#language,
+#custom-gpu-info,
+#cpu,
+#memory,
+#pulseaudio,
+#bluetooth,
+#network,
+#battery,
+#tray {
+    padding: 0 8px;
+}

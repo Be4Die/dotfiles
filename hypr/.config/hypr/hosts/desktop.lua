@@ -29,6 +29,7 @@ hl.env("LIBVA_DRIVER_NAME", "nvidia")
 hl.env("GBM_BACKEND", "nvidia-drm")
 hl.env("WLR_RENDERER_ALLOW_SOFTWARE", "1")
 hl.env("NVD_BACKEND", "direct")
+hl.env("BROWSER", "firefox")
 
 
 -----------------------
@@ -36,6 +37,9 @@ hl.env("NVD_BACKEND", "direct")
 -----------------------
 
 hl.config({
+    misc = {
+        middle_click_paste = false,
+    },
     decoration = {
         rounding       = 12,
         rounding_power = 2.0,

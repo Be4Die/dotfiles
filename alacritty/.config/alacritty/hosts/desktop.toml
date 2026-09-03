@@ -1,0 +1,6 @@
+# Desktop PC (1080p) Display Configuration
+[window]
+padding = { x = 12, y = 12 }
+
+[font]
+size = 11.0

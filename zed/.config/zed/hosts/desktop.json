@@ -1,0 +1,47 @@
+{
+  "agent_ui_font_size": 14.0,
+  "language_models": {
+    "opencode": {
+      "show_go_models": true
+    }
+  },
+  "cli_default_open_behavior": "existing_window",
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "agent": {
+    "dock": "right",
+    "default_model": {
+      "provider": "lmstudio",
+      "model": "google/gemma-4-e2b",
+      "enable_thinking": false
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "agent_servers": {},
+  "icon_theme": "Catppuccin Frappé",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "dark",
+    "light": "macOS Classic Light",
+    "dark": "Catppuccin Frappé"
+  },
+  "lsp": {
+    "gopls": {
+      "initialization_options": {
+        "buildFlags": ["-tags=integration,e2e"]
+      }
+    }
+  }
+}
