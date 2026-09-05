@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+ACTION="$1"
+STEP="${2:-5%}"
+
+# 1. Hardware change via Apple SMC
+brightnessctl --device='*kbd*' set "${STEP}${ACTION}" >/dev/null 2>&1
+
+# 2. Visual OSD in Catppuccin Frappe style
+PCT=$(brightnessctl --device='*kbd*' -m 2>/dev/null | awk -F, '{print $4}' | tr -d '%')
+if [ -n "$PCT" ]; then
+    PROG=$(awk -v p="$PCT" 'BEGIN { printf "%.2f", p / 100 }')
+    swayosd-client --custom-icon keyboard-brightness-symbolic --custom-progress "$PROG" --custom-progress-text "${PCT}%" 2>/dev/null &
+fi

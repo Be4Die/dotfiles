@@ -47,7 +47,6 @@ hl.on("hyprland.start", function()
     end
 
     hl.exec_cmd("wallpaper-toggle init")
-    hl.exec_cmd("systemctl --user start swayosd")
     hl.exec_cmd("hyprctl setcursor macOS 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme macOS")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
@@ -239,13 +238,13 @@ hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume lower"))
 hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"))
 
--- Screen Brightness
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("swayosd-client --brightness +5"))
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness -5"))
-hl.bind("F2",                    hl.dsp.exec_cmd("swayosd-client --brightness +5"))
-hl.bind("F1",                    hl.dsp.exec_cmd("swayosd-client --brightness -5"))
-hl.bind("code:233",              hl.dsp.exec_cmd("swayosd-client --brightness +5"))
-hl.bind("code:232",              hl.dsp.exec_cmd("swayosd-client --brightness -5"))
+-- Screen Brightness (GMUX unlocked + Catppuccin OSD)
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightness-osd + 5%"))
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightness-osd - 5%"))
+hl.bind("F2",                    hl.dsp.exec_cmd("brightness-osd + 5%"))
+hl.bind("F1",                    hl.dsp.exec_cmd("brightness-osd - 5%"))
+hl.bind("code:233",              hl.dsp.exec_cmd("brightness-osd + 5%"))
+hl.bind("code:232",              hl.dsp.exec_cmd("brightness-osd - 5%"))
 
 -- Apple Keyboard F3 (Mission Control) -> Round-robin Window Cycle (Tiled -> Maximized -> Floating)
 hl.bind("XF86LaunchA",           hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
@@ -255,11 +254,11 @@ hl.bind("XF86Explorer",          hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycl
 hl.bind("XF86LaunchB",           hl.dsp.exec_cmd(menu))
 hl.bind("XF86Search",            hl.dsp.exec_cmd(menu))
 
--- Keyboard Backlight
-hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness +5"))
-hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness -5"))
-hl.bind("F6",                    hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness +5"))
-hl.bind("F5",                    hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness -5"))
+-- Keyboard Backlight (Apple SMC + Catppuccin OSD)
+hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("kbd-brightness-osd + 5%"))
+hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("kbd-brightness-osd - 5%"))
+hl.bind("F6",                    hl.dsp.exec_cmd("kbd-brightness-osd + 5%"))
+hl.bind("F5",                    hl.dsp.exec_cmd("kbd-brightness-osd - 5%"))
 
 hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioNext",         hl.dsp.exec_cmd("playerctl next"))
