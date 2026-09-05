@@ -18,14 +18,14 @@
 
 * {
     font-family: "JetBrainsMono Nerd Font", monospace;
-    font-size: 13px;
+    font-size: 12.5px;
 }
 
-/* Fullscreen window overlay covering 100% of the display */
+/* Fullscreen opaque window - eliminates background text bleed-through and flicker */
 window {
     margin: 0px;
-    padding: 30px 48px;
-    background-color: rgba(35, 38, 52, 0.96);
+    padding: 24px 36px;
+    background-color: #232634;
     border: none;
     border-radius: 0px;
 }
@@ -39,8 +39,8 @@ window {
 }
 
 #input {
-    margin: 0px 0px 18px 0px;
-    padding: 12px 20px;
+    margin: 0px 6px 14px 6px;
+    padding: 10px 16px;
     border-radius: 10px;
     border: 2px solid @mauve;
     color: @text;
@@ -68,9 +68,9 @@ window {
 }
 
 #entry {
-    border-radius: 8px;
-    margin: 3px 6px;
-    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 2.5px 5px;
+    padding: 6.5px 10px;
     background-color: rgba(48, 52, 70, 0.55);
     border: 1px solid transparent;
 }

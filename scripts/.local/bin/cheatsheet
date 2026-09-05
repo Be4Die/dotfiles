@@ -6,63 +6,63 @@ import html
 
 # Shortcut definitions: (Key, Description, Category, Command_to_run_or_None)
 SHORTCUTS = [
-    # Applications & Launchers
-    ("Super + Q", "Terminal (Alacritty)", "Apps", "alacritty"),
-    ("Super + E", "File Manager (Thunar)", "Apps", "thunar"),
-    ("Super + R", "Application Launcher (Wofi)", "Apps", "wofi --conf ~/.config/wofi/program-menu/config --style ~/.config/wofi/program-menu/catppuccin_frappe/style.css --show drun"),
-    ("Super + W", "Wi-Fi Networks Menu", "Apps", "wifi-menu"),
-    ("Super + B", "Bluetooth Device Manager", "Apps", "blueman-manager"),
-    ("Super + D", "Interactive Calendar & Time", "Apps", "gsimplecal"),
-    ("Super + Shift + T", "Telegram Desktop", "Apps", "Telegram"),
-    ("Super + Shift + F", "Firefox Web Browser", "Apps", "firefox"),
-    ("Super + Shift + Z", "Zed Code Editor", "Apps", "zed"),
-    ("Super + Shift + H", "Herdr Container Manager", "Apps", "alacritty -e herdr"),
-    ("Super + Shift + W", "Toggle Wallpaper Theme", "Apps", "wallpaper-toggle"),
-    ("Super + Escape", "Power Menu (Lock / Logout / Reboot / Poweroff)", "Apps", "~/.config/hypr/powermenu.sh"),
+    # Приложения
+    ("Super + Q", "Терминал (Alacritty)", "Приложения", "alacritty"),
+    ("Super + E", "Файловый менеджер (Thunar)", "Приложения", "thunar"),
+    ("Super + R", "Меню приложений (Wofi)", "Приложения", "wofi --conf ~/.config/wofi/program-menu/config --style ~/.config/wofi/program-menu/catppuccin_frappe/style.css --show drun"),
+    ("Super + W", "Меню сетей Wi-Fi", "Приложения", "wifi-menu"),
+    ("Super + B", "Диспетчер Bluetooth", "Приложения", "blueman-manager"),
+    ("Super + D", "Календарь и часы", "Приложения", "gsimplecal"),
+    ("Super + Shift + T", "Telegram Desktop", "Приложения", "Telegram"),
+    ("Super + Shift + F", "Браузер Firefox", "Приложения", "firefox"),
+    ("Super + Shift + Z", "Редактор кода Zed", "Приложения", "zed"),
+    ("Super + Shift + H", "Менеджер Herdr (Docker)", "Приложения", "alacritty -e herdr"),
+    ("Super + Shift + W", "Смена темы обоев", "Приложения", "wallpaper-toggle"),
+    ("Super + Escape", "Меню питания системы", "Приложения", "~/.config/hypr/powermenu.sh"),
 
-    # Window Management
-    ("Super + C", "Close Active Window", "Window", None),
-    ("Super + V", "Toggle Floating Mode for Active Window", "Window", None),
-    ("F3 (or XF86LaunchA)", "Cycle Window Mode (Tiled -> Max -> Float)", "Window", "~/dotfiles/scripts/window-cycle.sh"),
-    ("Super + Left / Right / Up / Down", "Move Focus (Directional Navigation)", "Window", None),
-    ("Super + 1 .. 9, 0", "Switch to Workspace 1 .. 10", "Window", None),
-    ("Super + Shift + 1 .. 9, 0", "Move Focused Window to Workspace 1 .. 10", "Window", None),
-    ("Super + Mouse Scroll", "Cycle Through Active Workspaces", "Window", None),
-    ("Super + LMB Drag", "Move Window Interactively", "Window", None),
-    ("Super + RMB Drag", "Resize Window Interactively", "Window", None),
-    ("3-Finger Swipe (H)", "Switch Workspaces (Trackpad Gesture)", "Window", None),
+    # Окна и воркспейсы
+    ("Super + C", "Закрыть активное окно", "Окна", None),
+    ("Super + V", "Плавающий режим (Float)", "Окна", None),
+    ("F3 (Mission Control)", "Цикл: Тайлинг -> Макс -> Флоат", "Окна", "~/dotfiles/scripts/window-cycle.sh"),
+    ("Super + Стрелки", "Перемещение фокуса окон", "Окна", None),
+    ("Super + 1 .. 9, 0", "Перейти на воркспейс 1 .. 10", "Окна", None),
+    ("Super + Shift + 1..9, 0", "Перенести окно на воркспейс 1 .. 10", "Окна", None),
+    ("Super + Колесо мыши", "Быстрое переключение воркспейсов", "Окна", None),
+    ("Super + ЛКМ (Drag)", "Перемещение окна мышью", "Окна", None),
+    ("Super + ПКМ (Drag)", "Изменение размера окна мышью", "Окна", None),
+    ("Свайп 3 пальцами", "Смена воркспейсов (Тачпад)", "Окна", None),
 
-    # Screenshots
-    ("Print (or Ctrl + Print)", "Snip Region to Clipboard (Hyprshot)", "Screenshots", "hyprshot -m region --clipboard-only"),
-    ("Super + Print", "Capture Active Window to File (Hyprshot)", "Screenshots", "hyprshot -m window"),
-    ("Super + Shift + Print", "Capture Entire Screen to File (Hyprshot)", "Screenshots", "hyprshot -m output"),
-    ("Alt + Shift + 3", "macOS Style: Entire Screen Capture", "Screenshots", "hyprshot -m output"),
-    ("Alt + Shift + 4", "macOS Style: Snip Region to Clipboard", "Screenshots", "hyprshot -m region --clipboard-only"),
-    ("Alt + Shift + 5", "macOS Style: Capture Active Window", "Screenshots", "hyprshot -m window"),
+    # Скриншоты
+    ("Print / Ctrl + Print", "Снимок области в буфер обмена", "Снимки", "hyprshot -m region --clipboard-only"),
+    ("Super + Print", "Снимок активного окна в файл", "Снимки", "hyprshot -m window"),
+    ("Super + Shift + Print", "Снимок всего экрана в файл", "Снимки", "hyprshot -m output"),
+    ("Alt + Shift + 3", "Весь экран (в стиле macOS)", "Снимки", "hyprshot -m output"),
+    ("Alt + Shift + 4", "Область в буфер (в стиле macOS)", "Снимки", "hyprshot -m region --clipboard-only"),
+    ("Alt + Shift + 5", "Активное окно (в стиле macOS)", "Снимки", "hyprshot -m window"),
 
-    # Media, Audio & Hardware
-    ("F1 / F2", "Display Brightness Down / Up (with OSD)", "Hardware", "brightness-osd + 5%"),
-    ("F5 / F6", "Keyboard Backlight Down / Up (with OSD)", "Hardware", "kbd-brightness-osd + 5%"),
-    ("F10 (Mute)", "Toggle Audio Mute (with OSD)", "Hardware", "swayosd-client --output-volume mute-toggle"),
-    ("F11 / F12", "Volume Down / Up (with OSD)", "Hardware", "swayosd-client --output-volume raise"),
-    ("F7 / F8 / F9", "Media Prev / Play-Pause / Next", "Hardware", "playerctl play-pause"),
-    ("Super + Space", "Switch Keyboard Layout (US / RU)", "Hardware", None),
-    ("Super + P", "Toggle Screen Mirror / External Display", "Hardware", "~/dotfiles/scripts/toggle-mirror.sh"),
-    ("Super + /", "Show System Shortcuts Cheatsheet (This overlay)", "System", None),
+    # Железо и мультимедиа
+    ("F1 / F2", "Яркость экрана меньше / больше", "Железо", "brightness-osd + 5%"),
+    ("F5 / F6", "Подсветка клавиатуры меньше / больше", "Железо", "kbd-brightness-osd + 5%"),
+    ("F10 (Mute)", "Включить / выключить звук", "Железо", "swayosd-client --output-volume mute-toggle"),
+    ("F11 / F12", "Громкость тише / громче", "Железо", "swayosd-client --output-volume raise"),
+    ("F7 / F8 / F9", "Медиа: Назад / Пауза / Вперед", "Железо", "playerctl play-pause"),
+    ("Super + Пробел", "Смена раскладки (US / RU)", "Железо", None),
+    ("Super + P", "Дублирование / внешний монитор", "Железо", "~/dotfiles/scripts/toggle-mirror.sh"),
+    ("Super + /", "Подсказка по всем шорткатам", "Система", None),
 ]
 
 # Color constants (Catppuccin Frappe)
-C_KEY = "#8caaee"    # Blue
-C_DIV = "#51576d"    # Surface1
-C_DESC = "#c6d0f5"   # Text
-C_CAT = "#ca9ee6"    # Mauve
+C_KEY = "#8caaee"   # Blue
+C_DIV = "#838ba7"   # Overlay1 (bright contrast so separator never disappears on select)
+C_DESC = "#c6d0f5"  # Text
+C_CAT = "#ca9ee6"   # Mauve
 
 entries = []
 command_map = {}
 
 for key, desc, cat, cmd in SHORTCUTS:
-    key_padded = html.escape(f"{key:<28}")
-    desc_padded = html.escape(f"{desc:<44}")
+    key_padded = html.escape(f"{key:<25}")
+    desc_padded = html.escape(f"{desc:<36}")
     cat_escaped = html.escape(f"[{cat}]")
     line = (
         f"<span color='{C_KEY}' font_weight='bold'>{key_padded}</span>"
@@ -97,8 +97,9 @@ cmd = [
     "--allow-markup",
     "--insensitive",
     "--parse-search",
-    "--prompt", "⌨ Search shortcuts (Type to filter, Enter to run, Esc to close)...",
+    "--prompt", "",
     "--columns", "2",
+    "--define", "orientation=horizontal",
     "--width", "100%",
     "--height", "100%",
     "--location", "top_left",
