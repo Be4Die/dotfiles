@@ -89,5 +89,7 @@ hl.bind("SUPER + P", hl.dsp.exec_cmd("~/dotfiles/scripts/toggle-mirror.sh"))
 ---------------------------
 
 hl.on("hyprland.start", function()
+    -- Set 2x HiDPI (192 DPI) for legacy XWayland/X11 apps on Retina screen
+    hl.exec_cmd("echo 'Xft.dpi: 192' | xrdb -merge")
     hl.exec_cmd("hypridle")
 end)

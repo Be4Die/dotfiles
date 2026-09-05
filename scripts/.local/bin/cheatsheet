@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+import subprocess
+import os
+import sys
+import html
+
+# Shortcut definitions: (Key, Description, Category, Command_to_run_or_None)
+SHORTCUTS = [
+    # Applications & Launchers
+    ("Super + Q", "Terminal (Alacritty)", "Apps", "alacritty"),
+    ("Super + E", "File Manager (Thunar)", "Apps", "thunar"),
+    ("Super + R", "Application Launcher (Wofi)", "Apps", "wofi --conf ~/.config/wofi/program-menu/config --style ~/.config/wofi/program-menu/catppuccin_frappe/style.css --show drun"),
+    ("Super + W", "Wi-Fi Networks Menu", "Apps", "wifi-menu"),
+    ("Super + B", "Bluetooth Device Manager", "Apps", "blueman-manager"),
+    ("Super + D", "Interactive Calendar & Time", "Apps", "gsimplecal"),
+    ("Super + Shift + T", "Telegram Desktop", "Apps", "Telegram"),
+    ("Super + Shift + F", "Firefox Web Browser", "Apps", "firefox"),
+    ("Super + Shift + Z", "Zed Code Editor", "Apps", "zed"),
+    ("Super + Shift + H", "Herdr Container Manager", "Apps", "alacritty -e herdr"),
+    ("Super + Shift + W", "Toggle Wallpaper Theme", "Apps", "wallpaper-toggle"),
+    ("Super + Escape", "Power Menu (Lock / Logout / Reboot / Poweroff)", "Apps", "~/.config/hypr/powermenu.sh"),
+
+    # Window Management
+    ("Super + C", "Close Active Window", "Window", None),
+    ("Super + V", "Toggle Floating Mode for Active Window", "Window", None),
+    ("F3 (or XF86LaunchA)", "Cycle Window Mode (Tiled -> Maximized -> Floating)", "Window", "~/dotfiles/scripts/window-cycle.sh"),
+    ("Super + Left / Right / Up / Down", "Move Focus (Directional Navigation)", "Window", None),
+    ("Super + 1 .. 9, 0", "Switch to Workspace 1 .. 10", "Window", None),
+    ("Super + Shift + 1 .. 9, 0", "Move Focused Window to Workspace 1 .. 10", "Window", None),
+    ("Super + Mouse Scroll", "Cycle Through Active Workspaces", "Window", None),
+    ("Super + LMB Drag", "Move Window Interactively", "Window", None),
+    ("Super + RMB Drag", "Resize Window Interactively", "Window", None),
+    ("3-Finger Swipe (H)", "Switch Workspaces (Trackpad Gesture)", "Window", None),
+
+    # Screenshots
+    ("Print (or Ctrl + Print)", "Snip Region to Clipboard (Hyprshot)", "Screenshots", "hyprshot -m region --clipboard-only"),
+    ("Super + Print", "Capture Active Window to File (Hyprshot)", "Screenshots", "hyprshot -m window"),
+    ("Super + Shift + Print", "Capture Entire Screen to File (Hyprshot)", "Screenshots", "hyprshot -m output"),
+    ("Alt + Shift + 3", "macOS Style: Entire Screen Capture", "Screenshots", "hyprshot -m output"),
+    ("Alt + Shift + 4", "macOS Style: Snip Region to Clipboard", "Screenshots", "hyprshot -m region --clipboard-only"),
+    ("Alt + Shift + 5", "macOS Style: Capture Active Window", "Screenshots", "hyprshot -m window"),
+
+    # Media, Audio & Hardware
+    ("F1 / F2", "Display Brightness Down / Up (with OSD)", "Hardware", "swayosd-client --brightness +5"),
+    ("F5 / F6", "Keyboard Backlight Down / Up (with OSD)", "Hardware", "swayosd-client --device '*kbd*' --brightness +5"),
+    ("F10 (Mute)", "Toggle Audio Mute (with OSD)", "Hardware", "swayosd-client --output-volume mute-toggle"),
+    ("F11 / F12", "Volume Down / Up (with OSD)", "Hardware", "swayosd-client --output-volume raise"),
+    ("F7 / F8 / F9", "Media Prev / Play-Pause / Next", "Hardware", "playerctl play-pause"),
+    ("Super + Space", "Switch Keyboard Layout (US / RU)", "Hardware", None),
+    ("Super + P", "Toggle Screen Mirror / External Display", "Hardware", "~/dotfiles/scripts/toggle-mirror.sh"),
+    ("Super + /", "Show System Shortcuts Cheatsheet (This overlay)", "System", None),
+]
+
+# Color constants (Catppuccin Frappe)
+C_KEY = "#8caaee"    # Blue
+C_DIV = "#51576d"    # Surface1
+C_DESC = "#c6d0f5"   # Text
+C_CAT = "#ca9ee6"    # Mauve
+
+entries = []
+command_map = {}
+
+for key, desc, cat, cmd in SHORTCUTS:
+    key_padded = html.escape(f"{key:<34}")
+    desc_padded = html.escape(f"{desc:<52}")
+    cat_escaped = html.escape(f"[{cat}]")
+    line = (
+        f"<span color='{C_KEY}' font_weight='bold'>{key_padded}</span>"
+        f"<span color='{C_DIV}'>│</span> "
+        f"<span color='{C_DESC}'>{desc_padded}</span>"
+        f"<span color='{C_DIV}'>│</span> "
+        f"<span color='{C_CAT}'>{cat_escaped}</span>"
+    )
+    entries.append(line)
+    if cmd:
+        command_map[line] = cmd
+
+menu_input = "\n".join(entries)
+
+style_path = os.path.expanduser("~/.config/wofi/cheatsheet/style.css")
+
+cmd = [
+    "wofi",
+    "--dmenu",
+    "--allow-markup",
+    "--insensitive",
+    "--parse-search",
+    "--prompt", "⌨ Search shortcuts (Type to filter, Enter to run, Esc to close)...",
+    "--width", "92%",
+    "--height", "88%",
+    "--style", style_path,
+]
+
+try:
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+    stdout, _ = proc.communicate(input=menu_input)
+    selected = stdout.strip() if stdout else None
+except Exception:
+    sys.exit(0)
+
+if selected and selected in command_map:
+    run_target = command_map[selected]
+    os.system(f"{run_target} &")

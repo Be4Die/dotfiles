@@ -63,3 +63,12 @@ hl.config({
         },
     },
 })
+
+----------------------------
+---- DESKTOP AUTOSTART -----
+----------------------------
+
+hl.on("hyprland.start", function()
+    -- Set 1x standard DPI (96 DPI) for XWayland/X11 apps on desktop monitors
+    hl.exec_cmd("echo 'Xft.dpi: 96' | xrdb -merge")
+end)

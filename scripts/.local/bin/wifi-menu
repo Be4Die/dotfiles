@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+#
+# Wofi Wi-Fi Manager (Catppuccin Frappe)
+#
+
+set -e
+
+STYLE_PATH="$HOME/.config/wofi/wifi-menu/style.css"
+if [ ! -f "$STYLE_PATH" ]; then
+    STYLE_PATH="$HOME/dotfiles/wofi/.config/wofi/wifi-menu/style.css"
+fi
+
+notify() {
+    notify-send -a "Wi-Fi" -i "network-wireless" "$1" "$2" 2>/dev/null || true
+}
+
+# 1. Check Wi-Fi radio status
+WIFI_STATUS=$(nmcli radio wifi)
+
+if [ "$WIFI_STATUS" = "disabled" ]; then
+    CHOICE=$(echo -e "󰤨  Включить Wi-Fi\n󰅖  Отмена" | wofi --dmenu --prompt "Wi-Fi выключен" --width 350 --height 180 --style "$STYLE_PATH")
+    if [ "$CHOICE" = "󰤨  Включить Wi-Fi" ]; then
+        nmcli radio wifi on
+        notify "Wi-Fi" "Беспроводная сеть включена"
+    fi
+    exit 0
+fi
+
+# 2. Read networks from NetworkManager cache (instant 0.02s)
+RAW_LIST=$(nmcli -t -f IN-USE,SSID,SIGNAL,SECURITY dev wifi list --rescan no)
+
+CONNECTED_SSID=""
+ACTIVE_ITEM=""
+ITEMS=""
+declare -A SEEN_SSIDS
+
+while IFS=':' read -r IN_USE SSID SIGNAL SECURITY; do
+    [ -z "$SSID" ] && continue
+    [ -n "${SEEN_SSIDS[$SSID]}" ] && continue
+    SEEN_SSIDS["$SSID"]=1
+
+    if [ "$SIGNAL" -ge 75 ]; then
+        SIG_ICON="󰤨"
+    elif [ "$SIGNAL" -ge 50 ]; then
+        SIG_ICON="󰤥"
+    elif [ "$SIGNAL" -ge 25 ]; then
+        SIG_ICON="󰤢"
+    else
+        SIG_ICON="󰤟"
+    fi
+
+    if [[ "$SECURITY" =~ WPA|WEP|802.1X ]]; then
+        SEC_ICON=""
+    else
+        SEC_ICON=""
+    fi
+
+    if [ "$IN_USE" = "*" ]; then
+        CONNECTED_SSID="$SSID"
+        ACTIVE_ITEM="󰄬 $SIG_ICON  $SSID   ($SIGNAL% $SEC_ICON) [Подключено]"
+    else
+        ITEMS+="$SIG_ICON  $SSID   ($SIGNAL% $SEC_ICON)"$'\n'
+    fi
+done <<< "$RAW_LIST"
+
+MENU_OPTIONS=""
+if [ -n "$ACTIVE_ITEM" ]; then
+    MENU_OPTIONS+="$ACTIVE_ITEM"$'\n'
+fi
+MENU_OPTIONS+="󰑐  Обновить список сетей"$'\n'
+MENU_OPTIONS+="󰤮  Выключить Wi-Fi"$'\n'
+MENU_OPTIONS+="$ITEMS"
+
+SELECTED=$(echo -n "$MENU_OPTIONS" | sed '/^$/d' | wofi --dmenu --prompt "Поиск Wi-Fi..." --width 450 --height 450 --style "$STYLE_PATH")
+
+[ -z "$SELECTED" ] && exit 0
+
+# Actions
+if [[ "$SELECTED" == "󰤮  Выключить Wi-Fi"* ]]; then
+    nmcli radio wifi off
+    notify "Wi-Fi" "Беспроводная сеть выключена"
+    exit 0
+elif [[ "$SELECTED" == "󰑐  Обновить список сетей"* ]]; then
+    notify "Wi-Fi" "Сканирование сетей..."
+    nmcli dev wifi list --rescan yes >/dev/null 2>&1 || true
+    exec "$0"
+    exit 0
+fi
+
+# If clicked on currently active network
+if [[ "$SELECTED" == *" [Подключено]"* ]]; then
+    CHOICE=$(echo -e "󰅖  Отключиться от сети\n󰆴  Забыть эту сеть\n󰌑  Назад" | wofi --dmenu --prompt "$CONNECTED_SSID" --width 350 --height 220 --style "$STYLE_PATH")
+    if [ "$CHOICE" = "󰅖  Отключиться от сети" ]; then
+        DEVICE=$(nmcli -t -f DEVICE,TYPE dev | grep -w "wifi" | cut -d: -f1 | head -n1)
+        nmcli dev disconnect "$DEVICE"
+        notify "Wi-Fi" "Отключено от $CONNECTED_SSID"
+    elif [ "$CHOICE" = "󰆴  Забыть эту сеть" ]; then
+        nmcli connection delete id "$CONNECTED_SSID" 2>/dev/null || nmcli connection delete "$CONNECTED_SSID" 2>/dev/null || true
+        notify "Wi-Fi" "Сеть $CONNECTED_SSID удалена"
+    fi
+    exit 0
+fi
+
+# Extract SSID
+CHOSEN_SSID=$(echo "$SELECTED" | sed -E 's/^[^ ]+[ ]+//' | sed -E 's/[ ]+\([0-9]+%.*$//')
+
+# Check if connection profile already exists
+SAVED=$(nmcli -t -f NAME,TYPE connection show | grep -E ":(802-11-wireless|wifi)$" | cut -d: -f1 | grep -Fx "$CHOSEN_SSID" || true)
+
+connect_with_password() {
+    PASS=$(zenity --password --title="Подключение к $CHOSEN_SSID" 2>/dev/null || true)
+    [ -z "$PASS" ] && exit 0
+    notify "Wi-Fi" "Подключение к $CHOSEN_SSID..."
+    if nmcli dev wifi connect "$CHOSEN_SSID" password "$PASS"; then
+        notify "Wi-Fi" "Успешно подключено к $CHOSEN_SSID"
+    else
+        notify "Wi-Fi" "Не удалось подключиться к $CHOSEN_SSID"
+    fi
+}
+
+if [ -n "$SAVED" ]; then
+    notify "Wi-Fi" "Подключение к $CHOSEN_SSID..."
+    if nmcli connection up id "$CHOSEN_SSID" 2>/dev/null; then
+        notify "Wi-Fi" "Успешно подключено к $CHOSEN_SSID"
+    else
+        # If connecting with saved profile failed (e.g. password changed), ask for password
+        connect_with_password
+    fi
+else
+    # New network
+    if [[ "$SELECTED" == *""* ]]; then
+        connect_with_password
+    else
+        notify "Wi-Fi" "Подключение к $CHOSEN_SSID..."
+        if nmcli dev wifi connect "$CHOSEN_SSID"; then
+            notify "Wi-Fi" "Успешно подключено к $CHOSEN_SSID"
+        else
+            notify "Wi-Fi" "Ошибка подключения к $CHOSEN_SSID"
+        fi
+    fi
+fi

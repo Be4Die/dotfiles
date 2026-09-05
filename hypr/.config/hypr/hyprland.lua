@@ -47,8 +47,7 @@ hl.on("hyprland.start", function()
     end
 
     hl.exec_cmd("wallpaper-toggle init")
-    hl.exec_cmd("nm-applet --indicator")
-    hl.exec_cmd("blueman-applet")
+    hl.exec_cmd("systemctl --user start swayosd")
     hl.exec_cmd("hyprctl setcursor macOS 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme macOS")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
@@ -66,6 +65,13 @@ hl.env("HYPRCURSOR_THEME", "macOS")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_STYLE_OVERRIDE", "kvantum")
+
+-- Force Wayland native toolkits (fixes GTK/Qt mouse click offset and HiDPI scaling bugs)
+hl.env("GDK_BACKEND", "wayland,x11,*")
+hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+hl.env("SDL_VIDEODRIVER", "wayland")
+hl.env("CLUTTER_BACKEND", "wayland")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
 
 -----------------------
@@ -180,6 +186,11 @@ hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle"}))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("wifi-menu"))
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("blueman-manager"))
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("gsimplecal"))
+hl.bind(mainMod .. " + slash", hl.dsp.exec_cmd("cheatsheet"))
+hl.bind(mainMod .. " + question", hl.dsp.exec_cmd("cheatsheet"))
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("~/.config/hypr/powermenu.sh"))
 
 -- Move focus
@@ -224,17 +235,17 @@ hl.bind("ALT + SHIFT + 4", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"
 hl.bind("ALT + SHIFT + 5", hl.dsp.exec_cmd("hyprshot -m window"))
 
 -- Media & Hardware Keys (Volume, Brightness, Keyboard Backlight, Player)
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"))
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume raise"))
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume lower"))
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"))
 
--- Screen Brightness (amdgpu_bl1)
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("/usr/local/bin/change-brightness + 5%"))
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("/usr/local/bin/change-brightness - 5%"))
-hl.bind("F2",                    hl.dsp.exec_cmd("/usr/local/bin/change-brightness + 5%"))
-hl.bind("F1",                    hl.dsp.exec_cmd("/usr/local/bin/change-brightness - 5%"))
-hl.bind("code:233",              hl.dsp.exec_cmd("/usr/local/bin/change-brightness + 5%"))
-hl.bind("code:232",              hl.dsp.exec_cmd("/usr/local/bin/change-brightness - 5%"))
+-- Screen Brightness
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("swayosd-client --brightness +5"))
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness -5"))
+hl.bind("F2",                    hl.dsp.exec_cmd("swayosd-client --brightness +5"))
+hl.bind("F1",                    hl.dsp.exec_cmd("swayosd-client --brightness -5"))
+hl.bind("code:233",              hl.dsp.exec_cmd("swayosd-client --brightness +5"))
+hl.bind("code:232",              hl.dsp.exec_cmd("swayosd-client --brightness -5"))
 
 -- Apple Keyboard F3 (Mission Control) -> Round-robin Window Cycle (Tiled -> Maximized -> Floating)
 hl.bind("XF86LaunchA",           hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
@@ -244,8 +255,11 @@ hl.bind("XF86Explorer",          hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycl
 hl.bind("XF86LaunchB",           hl.dsp.exec_cmd(menu))
 hl.bind("XF86Search",            hl.dsp.exec_cmd(menu))
 
-hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("brightnessctl --device='*kbd*' set 5%+"))
-hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("brightnessctl --device='*kbd*' set 5%-"))
+-- Keyboard Backlight
+hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness +5"))
+hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness -5"))
+hl.bind("F6",                    hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness +5"))
+hl.bind("F5",                    hl.dsp.exec_cmd("swayosd-client --device '*kbd*' --brightness -5"))
 
 hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioNext",         hl.dsp.exec_cmd("playerctl next"))
@@ -267,4 +281,47 @@ hl.window_rule({
     match = { class = "hyprland-run" },
     move  = "20 monitor_h-120",
     float = true,
+})
+
+-- Float utility, settings and dialog windows (prevents tiling squeeze & click offset bugs)
+local float_apps = {
+    "nm-connection-editor",
+    "pavucontrol",
+    "blueman-manager",
+    "gnome-power-statistics",
+    "xdg-desktop-portal-gtk",
+    "org.gnome.FileRoller",
+    "zenity",
+    "gsimplecal",
+}
+
+for _, cls in ipairs(float_apps) do
+    hl.window_rule({
+        name   = "float-" .. cls,
+        match  = { class = cls },
+        float  = true,
+        center = true,
+    })
+end
+
+-- Fixed adequate dimensions for utility managers (prevents half-screen tiling squeeze)
+hl.window_rule({
+    name   = "size-blueman-manager",
+    match  = { class = "blueman-manager" },
+    size   = "720 480",
+    center = true,
+})
+
+hl.window_rule({
+    name   = "size-pavucontrol",
+    match  = { class = "pavucontrol" },
+    size   = "720 500",
+    center = true,
+})
+
+hl.window_rule({
+    name   = "size-gsimplecal",
+    match  = { class = "gsimplecal" },
+    size   = "340 230",
+    center = true,
 })

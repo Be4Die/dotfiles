@@ -8,7 +8,7 @@
 
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["hyprland/language", "network", "battery", "cpu", "memory", "pulseaudio", "bluetooth", "tray"],
+    "modules-right": ["hyprland/language", "bluetooth", "network", "battery", "cpu", "memory", "pulseaudio", "tray"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -40,7 +40,29 @@
 
     "clock": {
         "format": "{:%H:%M:%S    %d.%m.%Y}",
-        "interval": 1
+        "interval": 1,
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ca9ee6'><b>{}</b></span>",
+                "days": "<span color='#c6d0f5'><b>{}</b></span>",
+                "weeks": "<span color='#81c8be'><b>W{}</b></span>",
+                "weekdays": "<span color='#e5c890'><b>{}</b></span>",
+                "today": "<span color='#e78284'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        },
+        "on-click": "gsimplecal"
     },
 
     "hyprland/language": {
@@ -50,11 +72,12 @@
     },
 
     "network": {
-        "format-wifi": "  {essid} ({signalStrength}%)",
+        "format-wifi": "  {signalStrength}%",
         "format-ethernet": "󰈀  {ipaddr}",
         "format-disconnected": "󰤮  Offline",
-        "tooltip-format": "{ifname} via {gwaddr}",
-        "on-click": "nm-connection-editor"
+        "tooltip-format": "  {essid} ({signalStrength}%) via {gwaddr}",
+        "on-click": "wifi-menu",
+        "on-click-right": "nm-connection-editor"
     },
 
     "battery": {
@@ -82,8 +105,8 @@
     },
 
     "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-muted": " Muted",
+        "format": "{icon}  {volume}%",
+        "format-muted": "",
         "format-icons": {
             "default": ["", ""]
         },
@@ -92,12 +115,14 @@
     },
 
     "bluetooth": {
-        "format": " {status}",
-        "format-disabled": "",
-        "format-off": "",
+        "format": "",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
         "format-connected": " {device_alias}",
         "format-connected-battery": " {device_alias} {device_battery_percentage}%",
-        "interval": 30,
+        "tooltip-format": " {controller_alias}\t{status}",
+        "tooltip-format-connected": " {device_alias}\t{device_battery_percentage}%\n\n{controller_alias}\t{status}",
+        "interval": 10,
         "on-click": "blueman-manager"
     },
 
