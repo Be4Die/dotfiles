@@ -2,111 +2,75 @@
 import subprocess
 import os
 import sys
-import html
 
-# Shortcut definitions: (Key, Description, Category, Command_to_run_or_None)
+# Shortcut definitions: (Key with Icon, Description, Category, Command_to_run_or_None)
 SHORTCUTS = [
     # Приложения
-    ("Super + Q", "Терминал (Alacritty)", "Приложения", "alacritty"),
-    ("Super + E", "Файловый менеджер (Thunar)", "Приложения", "thunar"),
-    ("Super + R", "Меню приложений (Wofi)", "Приложения", "wofi --conf ~/.config/wofi/program-menu/config --style ~/.config/wofi/program-menu/catppuccin_frappe/style.css --show drun"),
-    ("Super + W", "Меню сетей Wi-Fi", "Приложения", "wifi-menu"),
-    ("Super + B", "Диспетчер Bluetooth", "Приложения", "blueman-manager"),
-    ("Super + D", "Календарь и часы", "Приложения", "gsimplecal"),
-    ("Super + Shift + T", "Telegram Desktop", "Приложения", "Telegram"),
-    ("Super + Shift + F", "Браузер Firefox", "Приложения", "firefox"),
-    ("Super + Shift + Z", "Редактор кода Zed", "Приложения", "zed"),
-    ("Super + Shift + H", "Менеджер Herdr (Docker)", "Приложения", "alacritty -e herdr"),
-    ("Super + Shift + W", "Смена темы обоев", "Приложения", "wallpaper-toggle"),
-    ("Super + Escape", "Меню питания системы", "Приложения", "~/.config/hypr/powermenu.sh"),
+    ("  Super + Q", "Терминал (Alacritty)", "Приложения", "alacritty"),
+    ("  Super + E", "Файловый менеджер (Thunar)", "Приложения", "thunar"),
+    ("󰍉  Super + R", "Меню приложений (Fuzzel)", "Приложения", "fuzzel"),
+    ("󰤨  Super + W", "Меню сетей Wi-Fi", "Приложения", "wifi-menu"),
+    ("󰂯  Super + B", "Диспетчер Bluetooth", "Приложения", "blueman-manager"),
+    ("󰸗  Super + D", "Календарь и часы", "Приложения", "gsimplecal"),
+    ("  Super + Shift + T", "Telegram Desktop", "Приложения", "Telegram"),
+    ("󰈹  Super + Shift + F", "Браузер Firefox", "Приложения", "firefox"),
+    ("󰨞  Super + Shift + Z", "Редактор кода Zed", "Приложения", "zed"),
+    ("󰡨  Super + Shift + H", "Менеджер Herdr (Docker)", "Приложения", "alacritty -e herdr"),
+    ("󰸉  Super + Shift + W", "Смена темы обоев", "Приложения", "wallpaper-toggle"),
+    ("󰐥  Super + Escape", "Меню питания системы", "Приложения", "~/.config/hypr/powermenu.sh"),
 
     # Окна и воркспейсы
-    ("Super + C", "Закрыть активное окно", "Окна", None),
-    ("Super + V", "Плавающий режим (Float)", "Окна", None),
-    ("F3 (Mission Control)", "Цикл: Тайлинг -> Макс -> Флоат", "Окна", "~/dotfiles/scripts/window-cycle.sh"),
-    ("Super + Стрелки", "Перемещение фокуса окон", "Окна", None),
-    ("Super + 1 .. 9, 0", "Перейти на воркспейс 1 .. 10", "Окна", None),
-    ("Super + Shift + 1..9, 0", "Перенести окно на воркспейс 1 .. 10", "Окна", None),
-    ("Super + Колесо мыши", "Быстрое переключение воркспейсов", "Окна", None),
-    ("Super + ЛКМ (Drag)", "Перемещение окна мышью", "Окна", None),
-    ("Super + ПКМ (Drag)", "Изменение размера окна мышью", "Окна", None),
-    ("Свайп 3 пальцами", "Смена воркспейсов (Тачпад)", "Окна", None),
+    ("󰅖  Super + C", "Закрыть активное окно", "Окна", None),
+    ("󰉈  Super + V", "Плавающий режим (Float)", "Окна", None),
+    ("󰘸  F3 (Mission Control)", "Цикл: Тайлинг -> Макс -> Флоат", "Окна", "~/dotfiles/scripts/window-cycle.sh"),
+    ("󰁔  Super + Стрелки", "Перемещение фокуса окон", "Окна", None),
+    ("󰎤  Super + 1 .. 9, 0", "Перейти на воркспейс 1 .. 10", "Окна", None),
+    ("󰑢  Super + Shift + 1..9, 0", "Перенести окно на воркспейс 1 .. 10", "Окна", None),
+    ("󰍽  Super + Колесо мыши", "Быстрое переключение воркспейсов", "Окна", None),
+    ("󰍽  Super + ЛКМ (Drag)", "Перемещение окна мышью", "Окна", None),
+    ("󰍽  Super + ПКМ (Drag)", "Изменение размера окна мышью", "Окна", None),
+    ("󰟸  Свайп 3 пальцами", "Смена воркспейсов (Тачпад)", "Окна", None),
 
     # Скриншоты
-    ("Print / Ctrl + Print", "Снимок области в буфер обмена", "Снимки", "hyprshot -m region --clipboard-only"),
-    ("Super + Print", "Снимок активного окна в файл", "Снимки", "hyprshot -m window"),
-    ("Super + Shift + Print", "Снимок всего экрана в файл", "Снимки", "hyprshot -m output"),
-    ("Alt + Shift + 3", "Весь экран (в стиле macOS)", "Снимки", "hyprshot -m output"),
-    ("Alt + Shift + 4", "Область в буфер (в стиле macOS)", "Снимки", "hyprshot -m region --clipboard-only"),
-    ("Alt + Shift + 5", "Активное окно (в стиле macOS)", "Снимки", "hyprshot -m window"),
+    ("  Print / Ctrl + Print", "Снимок области в буфер обмена", "Снимки", "hyprshot -m region --clipboard-only"),
+    ("  Super + Print", "Снимок активного окна в файл", "Снимки", "hyprshot -m window"),
+    ("  Super + Shift + Print", "Снимок всего экрана в файл", "Снимки", "hyprshot -m output"),
+    ("  Alt + Shift + 3", "Весь экран (в стиле macOS)", "Снимки", "hyprshot -m output"),
+    ("  Alt + Shift + 4", "Область в буфер (в стиле macOS)", "Снимки", "hyprshot -m region --clipboard-only"),
+    ("  Alt + Shift + 5", "Активное окно (в стиле macOS)", "Снимки", "hyprshot -m window"),
 
     # Железо и мультимедиа
-    ("F1 / F2", "Яркость экрана меньше / больше", "Железо", "brightness-osd + 5%"),
-    ("F5 / F6", "Подсветка клавиатуры меньше / больше", "Железо", "kbd-brightness-osd + 5%"),
-    ("F10 (Mute)", "Включить / выключить звук", "Железо", "swayosd-client --output-volume mute-toggle"),
-    ("F11 / F12", "Громкость тише / громче", "Железо", "swayosd-client --output-volume raise"),
-    ("F7 / F8 / F9", "Медиа: Назад / Пауза / Вперед", "Железо", "playerctl play-pause"),
-    ("Super + Пробел", "Смена раскладки (US / RU)", "Железо", None),
-    ("Super + P", "Дублирование / внешний монитор", "Железо", "~/dotfiles/scripts/toggle-mirror.sh"),
-    ("Super + /", "Подсказка по всем шорткатам", "Система", None),
+    ("󰃞  F1 / F2", "Яркость экрана меньше / больше", "Железо", "brightness-osd + 5%"),
+    ("󰌌  F5 / F6", "Подсветка клавиатуры меньше / больше", "Железо", "kbd-brightness-osd + 5%"),
+    ("󰖁  F10 (Mute)", "Включить / выключить звук", "Железо", "swayosd-client --output-volume mute-toggle"),
+    ("󰕾  F11 / F12", "Громкость тише / громче", "Железо", "swayosd-client --output-volume raise"),
+    ("󰐊  F7 / F8 / F9", "Медиа: Назад / Пауза / Вперед", "Железо", "playerctl play-pause"),
+    ("󰌌  Super + Пробел", "Смена раскладки (US / RU)", "Железо", None),
+    ("󰍹  Super + P", "Дублирование / внешний монитор", "Железо", "~/dotfiles/scripts/toggle-mirror.sh"),
+    ("󰋖  Super + /", "Подсказка по всем шорткатам", "Система", None),
 ]
-
-# Color constants (Catppuccin Frappe)
-C_KEY = "#8caaee"   # Blue
-C_DIV = "#838ba7"   # Overlay1 (bright contrast so separator never disappears on select)
-C_DESC = "#c6d0f5"  # Text
-C_CAT = "#ca9ee6"   # Mauve
 
 entries = []
 command_map = {}
 
 for key, desc, cat, cmd in SHORTCUTS:
-    key_padded = html.escape(f"{key:<25}")
-    desc_padded = html.escape(f"{desc:<36}")
-    cat_escaped = html.escape(f"[{cat}]")
-    line = (
-        f"<span color='{C_KEY}' font_weight='bold'>{key_padded}</span>"
-        f"<span color='{C_DIV}'>│</span> "
-        f"<span color='{C_DESC}'>{desc_padded}</span>"
-        f"<span color='{C_DIV}'>│</span> "
-        f"<span color='{C_CAT}'>{cat_escaped}</span>"
-    )
+    key_padded = f"{key:<30}"
+    desc_padded = f"{desc:<36}"
+    cat_badge = f"[{cat}]"
+    line = f"{key_padded} │ {desc_padded} │ {cat_badge}"
     entries.append(line)
     if cmd:
         command_map[line] = cmd
 
 menu_input = "\n".join(entries)
 
-style_path = os.path.expanduser("~/.config/wofi/cheatsheet/style.css")
-
-# Dynamically compensate for top status bar (e.g. Waybar) to achieve absolute (0,0) fullscreen coverage
-y_offset = "-34"
-try:
-    layers_out = subprocess.check_output(["hyprctl", "layers"], text=True)
-    for l in layers_out.splitlines():
-        if "waybar" in l and "xywh:" in l:
-            parts = [p.rstrip(",") for p in l.split("xywh:")[1].strip().split()]
-            y_offset = str(-(int(parts[1]) + int(parts[3])))
-            break
-except Exception:
-    y_offset = "-34"
-
 cmd = [
-    "wofi",
+    "fuzzel",
     "--dmenu",
-    "--allow-markup",
-    "--insensitive",
-    "--parse-search",
-    "--prompt", "Поиск комбинаций...",
-    "--columns", "2",
-    "--width", "100%",
-    "--height", "100%",
-    "--location", "top_left",
-    "--x", "0",
-    "--y", y_offset,
-    "--define", "layer=overlay",
-    "--define", "dynamic_lines=false",
-    "--style", style_path,
+    "--prompt", "󰌌  Поиск: ",
+    "--placeholder", "Начните вводить для фильтрации комбинаций...",
+    "--lines", "18",
+    "--width", "86",
 ]
 
 try:

@@ -127,6 +127,7 @@ PACKAGES=(
     "waybar"
     "wlogout"
     "wofi"
+    "fuzzel"
     "zed"
     "zsh"
 )

@@ -24,7 +24,7 @@ end
 
 local terminal    = "alacritty"
 local fileManager = "thunar"
-local menu        = "wofi --conf ~/.config/wofi/program-menu/config --style ~/.config/wofi/program-menu/catppuccin_frappe/style.css --show drun"
+local menu        = "fuzzel"
 
 
 -------------------
@@ -250,7 +250,7 @@ hl.bind("code:232",              hl.dsp.exec_cmd("brightness-osd - 5%"))
 hl.bind("XF86LaunchA",           hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
 hl.bind("XF86Explorer",          hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
 
--- Apple Keyboard F4 (Launchpad) -> Wofi App Launcher
+-- Apple Keyboard F4 (Launchpad) -> Fuzzel App Launcher
 hl.bind("XF86LaunchB",           hl.dsp.exec_cmd(menu))
 hl.bind("XF86Search",            hl.dsp.exec_cmd(menu))
 
@@ -325,9 +325,9 @@ hl.window_rule({
     center = true,
 })
 
--- Disable layer animations for wofi (fixes jitter/twitching during typing and selection)
+-- Disable layer animations for launchers (fixes jitter/twitching during typing and selection)
 hl.layer_rule({
-    name    = "no-anim-wofi",
-    match   = { namespace = ".*wofi.*" },
+    name    = "no-anim-launcher",
+    match   = { namespace = ".*(wofi|fuzzel).*" },
     no_anim = true,
 })

@@ -240,6 +240,7 @@ wl-clipboard
 wl-mirror
 wlogout
 wofi
+fuzzel
 wpa_supplicant
 xdg-desktop-portal-hyprland
 xdg-user-dirs

@@ -18,7 +18,7 @@ notify() {
 WIFI_STATUS=$(nmcli radio wifi)
 
 if [ "$WIFI_STATUS" = "disabled" ]; then
-    CHOICE=$(echo -e "󰤨  Включить Wi-Fi\n󰅖  Отмена" | wofi --dmenu --prompt "Wi-Fi выключен" --width 350 --height 180 --style "$STYLE_PATH")
+    CHOICE=$(echo -e "󰤨  Включить Wi-Fi\n󰅖  Отмена" | fuzzel --dmenu --prompt "Wi-Fi: " --placeholder "" --lines 2 --width 25)
     if [ "$CHOICE" = "󰤨  Включить Wi-Fi" ]; then
         nmcli radio wifi on
         notify "Wi-Fi" "Беспроводная сеть включена"
@@ -71,7 +71,7 @@ MENU_OPTIONS+="󰑐  Обновить список сетей"$'\n'
 MENU_OPTIONS+="󰤮  Выключить Wi-Fi"$'\n'
 MENU_OPTIONS+="$ITEMS"
 
-SELECTED=$(echo -n "$MENU_OPTIONS" | sed '/^$/d' | wofi --dmenu --prompt "Поиск Wi-Fi..." --width 450 --height 450 --style "$STYLE_PATH")
+SELECTED=$(echo -n "$MENU_OPTIONS" | sed '/^$/d' | fuzzel --dmenu --prompt "Поиск Wi-Fi: " --placeholder "Выберите сеть..." --lines 12 --width 46)
 
 [ -z "$SELECTED" ] && exit 0
 
@@ -89,7 +89,7 @@ fi
 
 # If clicked on currently active network
 if [[ "$SELECTED" == *" [Подключено]"* ]]; then
-    CHOICE=$(echo -e "󰅖  Отключиться от сети\n󰆴  Забыть эту сеть\n󰌑  Назад" | wofi --dmenu --prompt "$CONNECTED_SSID" --width 350 --height 220 --style "$STYLE_PATH")
+    CHOICE=$(echo -e "󰅖  Отключиться от сети\n󰆴  Забыть эту сеть\n󰌑  Назад" | fuzzel --dmenu --prompt "$CONNECTED_SSID: " --placeholder "" --lines 3 --width 32)
     if [ "$CHOICE" = "󰅖  Отключиться от сети" ]; then
         DEVICE=$(nmcli -t -f DEVICE,TYPE dev | grep -w "wifi" | cut -d: -f1 | head -n1)
         nmcli dev disconnect "$DEVICE"
