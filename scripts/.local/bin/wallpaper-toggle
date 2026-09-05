@@ -1,23 +1,47 @@
 #!/usr/bin/env bash
-# Wallpaper Mode Toggle Script for Hyprland / Dotfiles
+#
+# Static Wallpaper Cycler for Hyprland (hyprpaper)
 # Usage:
-#   wallpaper-toggle              # Toggle between video (mpvpaper) and static (hyprpaper)
-#   wallpaper-toggle video [ID]   # Force video mode (default ID=1)
-#   wallpaper-toggle static [ID]  # Force static mode (default ID=1)
-#   wallpaper-toggle init         # Initialize state at Hyprland startup
+#   wallpaper-toggle        # Cycle to next wallpaper
+#   wallpaper-toggle [ID]   # Switch to specific wallpaper ID
+#   wallpaper-toggle init   # Initialize wallpaper on startup
+#
 
-STATE_FILE="$HOME/.cache/wallpaper_mode"
 WALLPAPER_DIR="$HOME/wallpapers"
+STATE_FILE="$HOME/.cache/wallpaper_index"
+HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
 
-TARGET_MODE="$1"
-INDEX="${2:-1}"
+mkdir -p "$HOME/.cache"
 
-CURRENT_MODE="video"
-if [ -f "$STATE_FILE" ]; then
-    CURRENT_MODE=$(cat "$STATE_FILE")
-fi
+# Find total number of wallpapers available
+TOTAL_PICS=$(ls -1 "$WALLPAPER_DIR"/h_*.{png,jpg} 2>/dev/null | wc -l)
+[ "$TOTAL_PICS" -eq 0 ] && exit 0
 
-# Auto-detect connected monitors from Hyprland
+CURRENT_INDEX=$(cat "$STATE_FILE" 2>/dev/null || echo 1)
+
+case "$1" in
+    init|daemon)
+        INDEX="$CURRENT_INDEX"
+        ;;
+    [0-9]*)
+        INDEX="$1"
+        ;;
+    *)
+        # Cycle to next wallpaper
+        INDEX=$(( (CURRENT_INDEX % TOTAL_PICS) + 1 ))
+        ;;
+esac
+
+# Find matching horizontal and vertical image files for INDEX
+H_IMG="$WALLPAPER_DIR/h_${INDEX}.png"
+[ ! -f "$H_IMG" ] && H_IMG="$WALLPAPER_DIR/h_${INDEX}.jpg"
+[ ! -f "$H_IMG" ] && H_IMG=$(ls "$WALLPAPER_DIR"/h_*.{png,jpg} 2>/dev/null | head -n 1)
+
+V_IMG="$WALLPAPER_DIR/v_${INDEX}.png"
+[ ! -f "$V_IMG" ] && V_IMG="$WALLPAPER_DIR/v_${INDEX}.jpg"
+[ ! -f "$V_IMG" ] && V_IMG="$H_IMG"
+
+# Auto-detect connected monitors and their orientation
 get_monitors() {
     hyprctl monitors -j 2>/dev/null | python3 -c "
 import json, sys
@@ -27,124 +51,43 @@ try:
         is_vert = '1' if m.get('transform', 0) in (1, 3) or m.get('height', 0) > m.get('width', 0) else '0'
         print(f\"{m['name']}:{is_vert}\")
 except:
-    print('eDP-1:0')
-" 2>/dev/null || echo "eDP-1:0"
+    print('HDMI-A-1:0')
+" 2>/dev/null || echo "HDMI-A-1:0"
 }
 
-kill_all_renderers() {
-    killall -9 mpvpaper hyprpaper linux-wallpaperengine 2>/dev/null || true
-    sleep 0.2
-}
-
-apply_video_mode() {
-    kill_all_renderers
-
-    H_MP4="$WALLPAPER_DIR/h_${INDEX}.mp4"
-    V_MP4="$WALLPAPER_DIR/v_${INDEX}.mp4"
-
-    [ ! -f "$H_MP4" ] && H_MP4=$(ls "$WALLPAPER_DIR"/h_*.mp4 2>/dev/null | head -n 1)
-    [ ! -f "$V_MP4" ] && V_MP4=$(ls "$WALLPAPER_DIR"/v_*.mp4 2>/dev/null | head -n 1)
-
-    # Start mpvpaper on each connected monitor
+# Build hyprpaper.conf dynamically
+{
+    echo "splash = false"
+    echo ""
     while IFS=':' read -r monitor is_vert; do
-        MPV_OPTS="no-audio --loop-file=inf"
-        if [[ "$monitor" == eDP* ]] || [[ "$(hostname)" == *"laptop"* ]]; then
-            MPV_OPTS="no-audio --loop-file=inf --panscan=1.0"
+        SELECTED_IMG="$H_IMG"
+        if [ "$is_vert" = "1" ] && [ -n "$V_IMG" ] && [ -f "$V_IMG" ]; then
+            SELECTED_IMG="$V_IMG"
         fi
         
-        SELECTED_MP4="$H_MP4"
-        if [ "$is_vert" = "1" ] && [ -n "$V_MP4" ] && [ -f "$V_MP4" ]; then
-            SELECTED_MP4="$V_MP4"
-        fi
-        
-        if [ -n "$SELECTED_MP4" ] && [ -f "$SELECTED_MP4" ]; then
-            mpvpaper -o "$MPV_OPTS" "$monitor" "$SELECTED_MP4" &
-        fi
-    done < <(get_monitors)
-
-    echo "video" > "$STATE_FILE"
-    notify-send -a "Wallpaper" -i video-display "Wallpaper Mode" "Switched to Animated Video (mpvpaper)" 2>/dev/null || true
-}
-
-apply_static_mode() {
-    kill_all_renderers
-
-    H_IMG="$WALLPAPER_DIR/h_${INDEX}.png"
-    [ ! -f "$H_IMG" ] && H_IMG="$WALLPAPER_DIR/h_${INDEX}.jpg"
-    [ ! -f "$H_IMG" ] && H_IMG=$(ls "$WALLPAPER_DIR"/h_*.png "$WALLPAPER_DIR"/h_*.jpg 2>/dev/null | head -n 1)
-
-    V_IMG="$WALLPAPER_DIR/v_${INDEX}.png"
-    [ ! -f "$V_IMG" ] && V_IMG="$WALLPAPER_DIR/v_${INDEX}.jpg"
-    [ ! -f "$V_IMG" ] && V_IMG=$(ls "$WALLPAPER_DIR"/v_*.png "$WALLPAPER_DIR"/v_*.jpg 2>/dev/null | head -n 1)
-
-    HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
-
-    # Build hyprpaper.conf dynamically for all connected monitors
-    {
-        echo "splash = false"
-        echo ""
-        while IFS=':' read -r monitor is_vert; do
-            SELECTED_IMG="$H_IMG"
-            if [ "$is_vert" = "1" ] && [ -n "$V_IMG" ] && [ -f "$V_IMG" ]; then
-                SELECTED_IMG="$V_IMG"
-            fi
-            
-            echo "wallpaper {"
-            echo "    monitor = $monitor"
-            echo "    path = $SELECTED_IMG"
-            echo "    fit_mode = cover"
-            echo "}"
-            echo ""
-        done < <(get_monitors)
-        # Fallback: catch-all monitor entry
         echo "wallpaper {"
-        echo "    monitor ="
-        echo "    path = $H_IMG"
+        echo "    monitor = $monitor"
+        echo "    path = $SELECTED_IMG"
         echo "    fit_mode = cover"
         echo "}"
-    } > "$HYPRPAPER_CONF"
+        echo ""
+    done < <(get_monitors)
 
-    hyprpaper &
+    # Fallback catch-all monitor entry
+    echo "wallpaper {"
+    echo "    monitor ="
+    echo "    path = $H_IMG"
+    echo "    fit_mode = cover"
+    echo "}"
+} > "$HYPRPAPER_CONF"
 
-    echo "static" > "$STATE_FILE"
-    notify-send -a "Wallpaper" -i preferences-desktop-wallpaper "Wallpaper Mode" "Switched to Static Image (hyprpaper)" 2>/dev/null || true
-}
+# Restart hyprpaper cleanly
+killall -9 hyprpaper mpvpaper 2>/dev/null || true
+sleep 0.1
+nohup hyprpaper >/dev/null 2>&1 &
 
-case "$TARGET_MODE" in
-    video|animated|anim)
-        apply_video_mode
-        ;;
-    static|img|image)
-        apply_static_mode
-        ;;
-    init|daemon)
-        if [[ "$(hostname)" == *"laptop"* ]]; then
-            INDEX=$(cat "$HOME/.cache/wallpaper_index" 2>/dev/null || echo 1)
-            apply_static_mode
-        else
-            if [ "$CURRENT_MODE" = "static" ]; then
-                apply_static_mode
-            else
-                apply_video_mode
-            fi
-        fi
-        ;;
-    *)
-        if [[ "$(hostname)" == *"laptop"* ]]; then
-            CURRENT_INDEX=$(cat "$HOME/.cache/wallpaper_index" 2>/dev/null || echo 1)
-            TOTAL_PICS=$(ls -1 "$WALLPAPER_DIR"/h_*.{png,jpg} 2>/dev/null | wc -l)
-            if [ "$TOTAL_PICS" -gt 0 ]; then
-                NEXT_INDEX=$(( (CURRENT_INDEX % TOTAL_PICS) + 1 ))
-                echo "$NEXT_INDEX" > "$HOME/.cache/wallpaper_index"
-                INDEX="$NEXT_INDEX"
-            fi
-            apply_static_mode
-        else
-            if [ "$CURRENT_MODE" = "video" ]; then
-                apply_static_mode
-            else
-                apply_video_mode
-            fi
-        fi
-        ;;
-esac
+echo "$INDEX" > "$STATE_FILE"
+
+if [ "$1" != "init" ] && [ "$1" != "daemon" ]; then
+    notify-send -a "Обои" -i preferences-desktop-wallpaper "Смена обоев" "Установлена тема #$INDEX" 2>/dev/null || true
+fi
