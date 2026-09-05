@@ -127,6 +127,8 @@ PACKAGES=(
     "waybar"
     "wlogout"
     "fuzzel"
+    "gsimplecal"
+    "swayosd"
     "zed"
     "zsh"
 )

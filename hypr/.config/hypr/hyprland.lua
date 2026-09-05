@@ -185,7 +185,6 @@ hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle"}))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("wifi-menu"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("blueman-manager"))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("gsimplecal"))
 hl.bind(mainMod .. " + slash", hl.dsp.exec_cmd("cheatsheet"))
@@ -233,36 +232,42 @@ hl.bind("ALT + SHIFT + 3", hl.dsp.exec_cmd("hyprshot -m output"))
 hl.bind("ALT + SHIFT + 4", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
 hl.bind("ALT + SHIFT + 5", hl.dsp.exec_cmd("hyprshot -m window"))
 
--- Media & Hardware Keys (Volume, Brightness, Keyboard Backlight, Player)
+-- Media Keys (Volume & Player)
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume raise"))
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume lower"))
 hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"))
 
--- Screen Brightness (GMUX unlocked + Catppuccin OSD)
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightness-osd + 5%"))
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightness-osd - 5%"))
-hl.bind("F2",                    hl.dsp.exec_cmd("brightness-osd + 5%"))
-hl.bind("F1",                    hl.dsp.exec_cmd("brightness-osd - 5%"))
-hl.bind("code:233",              hl.dsp.exec_cmd("brightness-osd + 5%"))
-hl.bind("code:232",              hl.dsp.exec_cmd("brightness-osd - 5%"))
-
--- Apple Keyboard F3 (Mission Control) -> Round-robin Window Cycle (Tiled -> Maximized -> Floating)
-hl.bind("XF86LaunchA",           hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
-hl.bind("XF86Explorer",          hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
-
--- Apple Keyboard F4 (Launchpad) -> Fuzzel App Launcher
-hl.bind("XF86LaunchB",           hl.dsp.exec_cmd(menu))
-hl.bind("XF86Search",            hl.dsp.exec_cmd(menu))
-
--- Keyboard Backlight (Apple SMC + Catppuccin OSD)
-hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("kbd-brightness-osd + 5%"))
-hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("kbd-brightness-osd - 5%"))
-hl.bind("F6",                    hl.dsp.exec_cmd("kbd-brightness-osd + 5%"))
-hl.bind("F5",                    hl.dsp.exec_cmd("kbd-brightness-osd - 5%"))
-
 hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioNext",         hl.dsp.exec_cmd("playerctl next"))
 hl.bind("XF86AudioPrev",         hl.dsp.exec_cmd("playerctl previous"))
+
+-- Laptop-only Hardware Controls & Hotkeys
+if hostname ~= "cachyos-pc" then
+    -- Wi-Fi Manager Menu
+    hl.bind(mainMod .. " + W",       hl.dsp.exec_cmd("wifi-menu"))
+
+    -- Screen Brightness (GMUX unlocked + Catppuccin OSD)
+    hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightness-osd + 5%"))
+    hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightness-osd - 5%"))
+    hl.bind("F2",                    hl.dsp.exec_cmd("brightness-osd + 5%"))
+    hl.bind("F1",                    hl.dsp.exec_cmd("brightness-osd - 5%"))
+    hl.bind("code:233",              hl.dsp.exec_cmd("brightness-osd + 5%"))
+    hl.bind("code:232",              hl.dsp.exec_cmd("brightness-osd - 5%"))
+
+    -- Apple Keyboard F3 (Mission Control) -> Round-robin Window Cycle (Tiled -> Maximized -> Floating)
+    hl.bind("XF86LaunchA",           hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
+    hl.bind("XF86Explorer",          hl.dsp.exec_cmd("~/dotfiles/scripts/window-cycle.sh"))
+
+    -- Apple Keyboard F4 (Launchpad) -> Fuzzel App Launcher
+    hl.bind("XF86LaunchB",           hl.dsp.exec_cmd(menu))
+    hl.bind("XF86Search",            hl.dsp.exec_cmd(menu))
+
+    -- Keyboard Backlight (Apple SMC + Catppuccin OSD)
+    hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("kbd-brightness-osd + 5%"))
+    hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("kbd-brightness-osd - 5%"))
+    hl.bind("F6",                    hl.dsp.exec_cmd("kbd-brightness-osd + 5%"))
+    hl.bind("F5",                    hl.dsp.exec_cmd("kbd-brightness-osd - 5%"))
+end
 
 
 ----------------------------------

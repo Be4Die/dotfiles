@@ -50,10 +50,25 @@ SHORTCUTS = [
     ("󰋖  Super + /", "Подсказка по всем шорткатам", "Система", None),
 ]
 
+import socket
+
+is_laptop = (socket.gethostname() != "cachyos-pc")
+
+LAPTOP_ONLY_KEYS = {
+    "󰤨  Super + W",
+    "󰘸  F3 (Mission Control)",
+    "󰟸  Свайп 3 пальцами",
+    "󰃞  F1 / F2",
+    "󰌌  F5 / F6",
+    "󰍹  Super + P",
+}
+
 entries = []
 command_map = {}
 
 for key, desc, cat, cmd in SHORTCUTS:
+    if not is_laptop and key in LAPTOP_ONLY_KEYS:
+        continue
     key_padded = f"{key:<30}"
     desc_padded = f"{desc:<36}"
     cat_badge = f"[{cat}]"
