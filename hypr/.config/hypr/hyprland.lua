@@ -324,3 +324,10 @@ hl.window_rule({
     size   = "340 230",
     center = true,
 })
+
+-- Disable layer animations for wofi (fixes jitter/twitching during typing and selection)
+hl.layer_rule({
+    name    = "no-anim-wofi",
+    match   = { namespace = ".*wofi.*" },
+    no_anim = true,
+})

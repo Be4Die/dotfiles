@@ -39,12 +39,6 @@ window {
     border: 0.16em solid @lavender;
     border-radius: 0.1em;
     background-color: @base;
-    animation: slideIn 0.3s ease-in-out both;
-}
-
-@keyframes slideIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
 }
 
 /* Отключаем отображение полосы прокрутки */
@@ -73,12 +67,6 @@ window {
     padding: 4px;
     border: none;
     background-color: transparent;
-    animation: fadeIn 0.3s ease-in-out both;
-}
-
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
 }
 
 /* Элемент списка (чуть уплотнили вертикальный padding с 8px до 6px) */

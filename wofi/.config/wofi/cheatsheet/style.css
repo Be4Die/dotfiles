@@ -1,3 +1,4 @@
+/* Catppuccin Frappe Palette */
 @define-color base #303446;
 @define-color mantle #292c3c;
 @define-color crust #232634;
@@ -20,25 +21,26 @@
     font-size: 13px;
 }
 
+/* Fullscreen window overlay covering 100% of the display */
 window {
     margin: 0px;
-    padding: 24px 36px;
-    background-color: rgba(35, 38, 52, 0.94);
+    padding: 30px 48px;
+    background-color: rgba(35, 38, 52, 0.96);
     border: none;
+    border-radius: 0px;
 }
 
 #outer-box {
     margin: 0px;
-    padding: 18px 24px;
-    background-color: rgba(48, 52, 70, 0.96);
-    border-radius: 16px;
-    border: 2px solid rgba(202, 158, 230, 0.45);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
 }
 
 #input {
-    margin: 6px 0 16px 0;
-    padding: 12px 18px;
+    margin: 0px 0px 18px 0px;
+    padding: 12px 20px;
     border-radius: 10px;
     border: 2px solid @mauve;
     color: @text;
@@ -47,31 +49,39 @@ window {
     font-weight: 600;
 }
 
+#input:focus {
+    border: 2px solid @lavender;
+}
+
 #scroll {
-    margin: 6px 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     border: none;
+    background-color: transparent;
 }
 
 #inner-box {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     border: none;
-}
-
-#text {
-    margin: 6px 10px;
-    color: @text;
+    background-color: transparent;
 }
 
 #entry {
     border-radius: 8px;
-    margin: 2px 0;
-    padding: 4px 6px;
-    transition: all 0.15s ease;
+    margin: 3px 6px;
+    padding: 8px 12px;
+    background-color: rgba(48, 52, 70, 0.55);
+    border: 1px solid transparent;
 }
 
 #entry:selected {
     background-color: @surface1;
-    border-left: 4px solid @mauve;
+    border: 1px solid @mauve;
+}
+
+#text {
+    margin: 0px;
+    padding: 0px;
+    color: @text;
 }

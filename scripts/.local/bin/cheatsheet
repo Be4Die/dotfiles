@@ -23,7 +23,7 @@ SHORTCUTS = [
     # Window Management
     ("Super + C", "Close Active Window", "Window", None),
     ("Super + V", "Toggle Floating Mode for Active Window", "Window", None),
-    ("F3 (or XF86LaunchA)", "Cycle Window Mode (Tiled -> Maximized -> Floating)", "Window", "~/dotfiles/scripts/window-cycle.sh"),
+    ("F3 (or XF86LaunchA)", "Cycle Window Mode (Tiled -> Max -> Float)", "Window", "~/dotfiles/scripts/window-cycle.sh"),
     ("Super + Left / Right / Up / Down", "Move Focus (Directional Navigation)", "Window", None),
     ("Super + 1 .. 9, 0", "Switch to Workspace 1 .. 10", "Window", None),
     ("Super + Shift + 1 .. 9, 0", "Move Focused Window to Workspace 1 .. 10", "Window", None),
@@ -41,8 +41,8 @@ SHORTCUTS = [
     ("Alt + Shift + 5", "macOS Style: Capture Active Window", "Screenshots", "hyprshot -m window"),
 
     # Media, Audio & Hardware
-    ("F1 / F2", "Display Brightness Down / Up (with OSD)", "Hardware", "swayosd-client --brightness +5"),
-    ("F5 / F6", "Keyboard Backlight Down / Up (with OSD)", "Hardware", "swayosd-client --device '*kbd*' --brightness +5"),
+    ("F1 / F2", "Display Brightness Down / Up (with OSD)", "Hardware", "brightness-osd + 5%"),
+    ("F5 / F6", "Keyboard Backlight Down / Up (with OSD)", "Hardware", "kbd-brightness-osd + 5%"),
     ("F10 (Mute)", "Toggle Audio Mute (with OSD)", "Hardware", "swayosd-client --output-volume mute-toggle"),
     ("F11 / F12", "Volume Down / Up (with OSD)", "Hardware", "swayosd-client --output-volume raise"),
     ("F7 / F8 / F9", "Media Prev / Play-Pause / Next", "Hardware", "playerctl play-pause"),
@@ -61,8 +61,8 @@ entries = []
 command_map = {}
 
 for key, desc, cat, cmd in SHORTCUTS:
-    key_padded = html.escape(f"{key:<34}")
-    desc_padded = html.escape(f"{desc:<52}")
+    key_padded = html.escape(f"{key:<28}")
+    desc_padded = html.escape(f"{desc:<44}")
     cat_escaped = html.escape(f"[{cat}]")
     line = (
         f"<span color='{C_KEY}' font_weight='bold'>{key_padded}</span>"
@@ -79,6 +79,18 @@ menu_input = "\n".join(entries)
 
 style_path = os.path.expanduser("~/.config/wofi/cheatsheet/style.css")
 
+# Dynamically compensate for top status bar (e.g. Waybar) to achieve absolute (0,0) fullscreen coverage
+y_offset = "-34"
+try:
+    layers_out = subprocess.check_output(["hyprctl", "layers"], text=True)
+    for l in layers_out.splitlines():
+        if "waybar" in l and "xywh:" in l:
+            parts = [p.rstrip(",") for p in l.split("xywh:")[1].strip().split()]
+            y_offset = str(-(int(parts[1]) + int(parts[3])))
+            break
+except Exception:
+    y_offset = "-34"
+
 cmd = [
     "wofi",
     "--dmenu",
@@ -86,8 +98,14 @@ cmd = [
     "--insensitive",
     "--parse-search",
     "--prompt", "⌨ Search shortcuts (Type to filter, Enter to run, Esc to close)...",
-    "--width", "92%",
-    "--height", "88%",
+    "--columns", "2",
+    "--width", "100%",
+    "--height", "100%",
+    "--location", "top_left",
+    "--x", "0",
+    "--y", y_offset,
+    "--define", "layer=overlay",
+    "--define", "dynamic_lines=false",
     "--style", style_path,
 ]
 
