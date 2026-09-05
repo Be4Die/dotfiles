@@ -1,20 +1,36 @@
 @import "../style.css";
 
 * {
-    font-size: 12.5px;
+    font-size: 13px;
 }
 
-#workspaces,
-#window,
-#clock,
+window#waybar {
+    min-height: 32px;
+}
+
+#workspaces {
+    padding: 3px 8px;
+}
+
+#workspaces button {
+    padding: 3px 10px;
+}
+
+#window {
+    padding: 0 14px;
+}
+
+#clock {
+    padding: 0 18px;
+}
+
 #language,
 #custom-gpu-info,
 #cpu,
 #memory,
 #pulseaudio,
 #bluetooth,
-#network,
-#battery,
 #tray {
     padding: 0 10px;
 }
+
