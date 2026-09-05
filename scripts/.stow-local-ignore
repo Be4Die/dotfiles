@@ -1,0 +1,8 @@
+change-brightness
+change-brightness.sh
+clean-wofi.sh
+gmux-backlight-sudoers
+lid-handler.sh
+toggle-mirror.sh
+unlock-gmux
+window-cycle.sh
