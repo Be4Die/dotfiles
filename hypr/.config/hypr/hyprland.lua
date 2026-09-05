@@ -328,6 +328,6 @@ hl.window_rule({
 -- Disable layer animations for launchers (fixes jitter/twitching during typing and selection)
 hl.layer_rule({
     name    = "no-anim-launcher",
-    match   = { namespace = ".*(wofi|fuzzel).*" },
+    match   = { namespace = ".*fuzzel.*" },
     no_anim = true,
 })

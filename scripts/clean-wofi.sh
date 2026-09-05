@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Hide unwanted/clutter CLI, TUI, administrative, and test .desktop files from Wofi / app launchers
+# Hide unwanted/clutter CLI, TUI, administrative, and test .desktop files from Fuzzel and app launchers
 
 mkdir -p "$HOME/.local/share/applications"
 

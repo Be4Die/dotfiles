@@ -1,14 +1,9 @@
 #!/usr/bin/env bash
 #
-# Wofi Wi-Fi Manager (Catppuccin Frappe)
+# Fuzzel Wi-Fi Manager (Catppuccin Frappe)
 #
 
 set -e
-
-STYLE_PATH="$HOME/.config/wofi/wifi-menu/style.css"
-if [ ! -f "$STYLE_PATH" ]; then
-    STYLE_PATH="$HOME/dotfiles/wofi/.config/wofi/wifi-menu/style.css"
-fi
 
 notify() {
     notify-send -a "Wi-Fi" -i "network-wireless" "$1" "$2" 2>/dev/null || true
