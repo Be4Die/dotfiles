@@ -1,27 +1,30 @@
 @import "../style.css";
 
 * {
-    font-size: 13px;
+    font-size: 14.5px;
 }
 
 window#waybar {
-    min-height: 32px;
+    min-height: 36px;
 }
 
 #workspaces {
-    padding: 3px 8px;
+    padding: 4px 8px;
 }
 
 #workspaces button {
-    padding: 3px 10px;
+    padding: 4px 12px;
+    font-size: 14px;
 }
 
 #window {
-    padding: 0 14px;
+    padding: 0 16px;
+    font-size: 14px;
 }
 
 #clock {
-    padding: 0 18px;
+    padding: 0 20px;
+    font-size: 14.5px;
 }
 
 #language,
@@ -31,6 +34,7 @@ window#waybar {
 #pulseaudio,
 #bluetooth,
 #tray {
-    padding: 0 10px;
+    padding: 0 12px;
+    font-size: 14px;
 }
 
