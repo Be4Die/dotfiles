@@ -14,27 +14,36 @@
 @define-color red #e78284;
 @define-color yellow #e5c890;
 
+window {
+    background-color: transparent;
+    background: transparent;
+}
+
 window#osd {
-    border-radius: 20px;
-    border: 2px solid rgba(202, 158, 230, 0.45);
-    background-color: rgba(41, 44, 60, 0.88);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 9999px;
+    border: 1.5px solid rgba(202, 158, 230, 0.5);
+    background-color: rgba(41, 44, 60, 0.94);
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
 }
 
 window#osd #container {
-    margin: 14px 22px;
+    margin: 6px 14px;
+    padding: 0;
 }
 
 window#osd image,
 window#osd label {
     color: @text;
     font-family: "JetBrainsMono Nerd Font", sans-serif;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
 }
 
 window#osd image {
-    margin-right: 12px;
+    margin-right: 8px;
+    -gtk-icon-size: 16px;
 }
 
 window#osd progressbar:disabled,
@@ -44,9 +53,9 @@ window#osd image:disabled {
 
 window#osd progressbar,
 window#osd segmentedprogress {
-    min-height: 8px;
-    min-width: 180px;
-    border-radius: 999px;
+    min-height: 5px;
+    min-width: 95px;
+    border-radius: 9999px;
     background: transparent;
     border: none;
 }
@@ -68,7 +77,7 @@ window#osd segment.active {
 }
 
 window#osd segment {
-    margin-left: 6px;
+    margin-left: 4px;
 }
 
 window#osd segment:first-child {
