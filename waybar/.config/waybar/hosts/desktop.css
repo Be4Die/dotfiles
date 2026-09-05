@@ -1,7 +1,7 @@
 @import "../style.css";
 
 * {
-    font-size: 13px;
+    font-size: 12.5px;
 }
 
 window#waybar {
