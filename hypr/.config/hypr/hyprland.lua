@@ -330,9 +330,16 @@ hl.window_rule({
     center = true,
 })
 
--- Disable layer animations for launchers (fixes jitter/twitching during typing and selection)
+-- Disable layer animations for launchers (fuzzel sets layer-shell namespace to "launcher")
 hl.layer_rule({
     name    = "no-anim-launcher",
+    match   = { namespace = "launcher" },
+    no_anim = true,
+})
+
+hl.layer_rule({
+    name    = "no-anim-fuzzel",
     match   = { namespace = ".*fuzzel.*" },
     no_anim = true,
 })
+
