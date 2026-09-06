@@ -20,8 +20,16 @@ TOTAL_PICS=$(ls -1 "$WALLPAPER_DIR"/h_*.{png,jpg} 2>/dev/null | wc -l)
 CURRENT_INDEX=$(cat "$STATE_FILE" 2>/dev/null || echo 1)
 
 case "$1" in
-    init|daemon)
-        INDEX="$CURRENT_INDEX"
+    init|daemon|random)
+        # Random wallpaper from available collection
+        if [ "$TOTAL_PICS" -gt 1 ]; then
+            while :; do
+                INDEX=$(( (RANDOM % TOTAL_PICS) + 1 ))
+                [ "$INDEX" -ne "$CURRENT_INDEX" ] && break
+            done
+        else
+            INDEX=1
+        fi
         ;;
     [0-9]*)
         INDEX="$1"
@@ -33,12 +41,12 @@ case "$1" in
 esac
 
 # Find matching horizontal and vertical image files for INDEX
-H_IMG="$WALLPAPER_DIR/h_${INDEX}.png"
-[ ! -f "$H_IMG" ] && H_IMG="$WALLPAPER_DIR/h_${INDEX}.jpg"
-[ ! -f "$H_IMG" ] && H_IMG=$(ls "$WALLPAPER_DIR"/h_*.{png,jpg} 2>/dev/null | head -n 1)
+H_IMG="$WALLPAPER_DIR/h_${INDEX}.jpg"
+[ ! -f "$H_IMG" ] && H_IMG="$WALLPAPER_DIR/h_${INDEX}.png"
+[ ! -f "$H_IMG" ] && H_IMG=$(ls "$WALLPAPER_DIR"/h_*.{jpg,png} 2>/dev/null | head -n 1)
 
-V_IMG="$WALLPAPER_DIR/v_${INDEX}.png"
-[ ! -f "$V_IMG" ] && V_IMG="$WALLPAPER_DIR/v_${INDEX}.jpg"
+V_IMG="$WALLPAPER_DIR/v_${INDEX}.jpg"
+[ ! -f "$V_IMG" ] && V_IMG="$WALLPAPER_DIR/v_${INDEX}.png"
 [ ! -f "$V_IMG" ] && V_IMG="$H_IMG"
 
 # Auto-detect connected monitors and their orientation
@@ -81,13 +89,18 @@ except:
     echo "}"
 } > "$HYPRPAPER_CONF"
 
-# Restart hyprpaper cleanly
-killall -9 hyprpaper mpvpaper 2>/dev/null || true
-sleep 0.1
-nohup hyprpaper >/dev/null 2>&1 &
+# Apply wallpaper dynamically or start hyprpaper
+if pgrep -x hyprpaper >/dev/null; then
+    while IFS=':' read -r monitor is_vert; do
+        SELECTED_IMG="$H_IMG"
+        if [ "$is_vert" = "1" ] && [ -n "$V_IMG" ] && [ -f "$V_IMG" ]; then
+            SELECTED_IMG="$V_IMG"
+        fi
+        hyprctl hyprpaper wallpaper "$monitor,$SELECTED_IMG" 2>/dev/null || true
+    done < <(get_monitors)
+else
+    nohup hyprpaper >/dev/null 2>&1 &
+fi
 
 echo "$INDEX" > "$STATE_FILE"
 
-if [ "$1" != "init" ] && [ "$1" != "daemon" ]; then
-    notify-send -a "Обои" -i preferences-desktop-wallpaper "Смена обоев" "Установлена тема #$INDEX" 2>/dev/null || true
-fi
