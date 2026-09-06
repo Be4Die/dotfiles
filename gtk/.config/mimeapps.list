@@ -45,8 +45,11 @@ x-scheme-handler/antigravity=antigravity.desktop
 x-scheme-handler/unityhub=unityhub.desktop
 x-scheme-handler/jetbrains=jetbrainsd.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+application/vnd.jgraph.mxfile=drawio.desktop
 
 [Added Associations]
+application/vnd.jgraph.mxfile=drawio.desktop;
+text/x-shellscript=dev.zed.Zed.desktop;
 image/jpeg=org.gnome.gThumb.desktop;
 image/jpg=org.gnome.gThumb.desktop;
 image/png=org.gnome.gThumb.desktop;
