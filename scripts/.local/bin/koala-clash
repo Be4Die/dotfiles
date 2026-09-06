@@ -3,9 +3,10 @@
 
 HOSTNAME_CURRENT="$(hostname 2>/dev/null || cat /etc/hostname 2>/dev/null || echo "")"
 
+FLAGS=()
 if [ "$HOSTNAME_CURRENT" = "cachyos-laptop" ]; then
     export GDK_SCALE=2
-    export WEBKIT_DISABLE_DMABUF_RENDERER=1
+    FLAGS+=(--disable-gpu --ozone-platform-hint=auto)
 fi
 
-exec /opt/Koala.Clash/koala-clash "$@"
+exec /opt/Koala.Clash/koala-clash "${FLAGS[@]}" "$@"
