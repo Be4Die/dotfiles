@@ -11,7 +11,7 @@ SHORTCUTS = [
     ("󰍉  Super + R", "Меню приложений (Fuzzel)", "Приложения", "fuzzel"),
     ("󰤨  Super + W", "Меню сетей Wi-Fi", "Приложения", "wifi-menu"),
     ("󰂯  Super + B", "Диспетчер Bluetooth", "Приложения", "blueman-manager"),
-    ("󰸗  Super + D", "Календарь и часы", "Приложения", "gsimplecal"),
+    ("󰍹  Super + D", "Дублирование экрана (Презентация)", "Железо", "~/dotfiles/scripts/toggle-mirror.sh"),
     ("  Super + Shift + T", "Telegram Desktop", "Приложения", "Telegram"),
     ("󰈹  Super + Shift + F", "Браузер Firefox", "Приложения", "firefox"),
     ("󰨞  Super + Shift + Z", "Редактор кода Zed", "Приложения", "zed"),

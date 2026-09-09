@@ -12,16 +12,14 @@ case "$CURRENT_CONF" in
 esac
 
 OPTIONS=(
-    "󰌪  Тихий режим (1.2 GHz)     [Для пар: 0 шума, кулеры спят]"
-    "󰾆  Энергосбережение (1.6 GHz) [Холодный и плавный]"
-    "󰓅  Баланс (2.5 GHz)          [Стандартный режим без Турбо]"
-    "🚀 Максимум (3.7 GHz Turbo)   [Пиковая мощность]"
+    "󰌪  Тихий (1.2 GHz)"
+    "󰾆  Энергосбережение (1.6 GHz)"
+    "󰓅  Баланс (2.5 GHz)"
+    "🚀 Максимум (3.7 GHz Turbo)"
 )
 
-PROMPT="󰓅 CPU ($CURRENT_TAG): "
-
 MENU_TEXT=$(printf "%s\n" "${OPTIONS[@]}")
-CHOICE=$(echo "$MENU_TEXT" | fuzzel --dmenu --prompt "$PROMPT" --placeholder "Выберите профиль процессора..." --lines 4 --width 54)
+CHOICE=$(echo "$MENU_TEXT" | fuzzel --dmenu --hide-prompt --lines 4 --width 28)
 
 case "$CHOICE" in
     *1.2*)
