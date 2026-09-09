@@ -8,7 +8,7 @@ mkdir -p "$HOME/Pictures/Screenshots"
 case "$MODE" in
     region|output)
         # Fullscreen freeze with crop tool (exact GitHub demo behavior, no separate window)
-        grim - | satty --filename - --fullscreen --initial-tool crop
+        grim -l 0 - | satty --filename - --fullscreen --initial-tool crop
         ;;
     window)
         hyprshot -m window --raw | satty --filename -
@@ -23,6 +23,6 @@ case "$MODE" in
         flameshot gui
         ;;
     *)
-        grim - | satty --filename - --fullscreen --initial-tool crop
+        grim -l 0 - | satty --filename - --fullscreen --initial-tool crop
         ;;
 esac
