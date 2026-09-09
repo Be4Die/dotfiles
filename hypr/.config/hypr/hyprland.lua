@@ -316,14 +316,12 @@ hl.window_rule({
     name        = "satty-fullscreen",
     match       = { class = "com.gabm.satty" },
     fullscreen  = true,
-    stayfocused = true,
 })
 
 hl.window_rule({
     name        = "flameshot-fullscreen",
     match       = { class = "flameshot" },
     fullscreen  = true,
-    stayfocused = true,
 })
 
 -- Fixed adequate dimensions for utility managers (prevents half-screen tiling squeeze)
