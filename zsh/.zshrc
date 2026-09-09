@@ -17,6 +17,7 @@ export PATH="$PATH:/home/michael/.lmstudio/bin"
 # End of LM Studio CLI section
 
 alias task='go-task'
+alias lg='lazygit'
 export PATH="$PATH:$HOME/go/bin"
 
 

@@ -69,7 +69,5 @@ echo "🎉 Миграция на нативный Docker успешно заве
 echo "Чтобы запускать docker/lazydocker без sudo в текущей сессии, выполните:"
 echo "    newgrp docker"
 echo "(или просто перезайдите в систему / перезагрузите ПК)."
-echo "Горячие клавиши в Hyprland:"
-echo "    Super + Shift + D  ->  LazyDocker"
-echo "    Super + Shift + G  ->  LazyGit"
+echo "Горячая клавиша для запуска в Hyprland: Super + Shift + D"
 echo "================================================================"
