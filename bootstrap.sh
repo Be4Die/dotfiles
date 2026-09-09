@@ -128,6 +128,7 @@ PACKAGES=(
     "wlogout"
     "fuzzel"
     "flameshot"
+    "herdr"
     "gsimplecal"
     "swayosd"
     "zed"
