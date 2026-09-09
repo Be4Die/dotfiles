@@ -311,18 +311,23 @@ for _, cls in ipairs(float_apps) do
     })
 end
 
--- Fullscreen overlay for screenshot annotation tools (Satty & Flameshot)
+-- Floating full-screen overlay for screenshot annotation tools (Satty & Flameshot)
+-- Keeps windows in floating layer to prevent any workspace tiling recalculation / twitching
 hl.window_rule({
-    name        = "satty-fullscreen",
+    name        = "satty-overlay",
     match       = { class = "com.gabm.satty" },
-    fullscreen  = true,
+    float       = true,
+    move        = "0 0",
+    size        = "100% 100%",
     no_anim     = true,
 })
 
 hl.window_rule({
-    name        = "flameshot-fullscreen",
+    name        = "flameshot-overlay",
     match       = { class = "flameshot" },
-    fullscreen  = true,
+    float       = true,
+    move        = "0 0",
+    size        = "100% 100%",
     no_anim     = true,
 })
 

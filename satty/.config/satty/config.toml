@@ -1,5 +1,5 @@
 [general]
-fullscreen = true
+fullscreen = false
 early-exit = ["copy", "save"]
 initial-tool = "crop"
 copy-command = "wl-copy"
