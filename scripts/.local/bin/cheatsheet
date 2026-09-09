@@ -60,7 +60,8 @@ LAPTOP_ONLY_KEYS = {
     "󰟸  Свайп 3 пальцами",
     "󰃞  F1 / F2",
     "󰌌  F5 / F6",
-    "󰍹  Super + P",
+    "󰍹  Super + D",
+    "󰓅  Super + P",
 }
 
 entries = []
