@@ -209,6 +209,7 @@ hl.bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = "10" }))
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("Telegram"))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("firefox"))
 hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd("alacritty -e herdr"))
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd("alacritty -e lazydocker"))
 hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("zed"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("wallpaper-toggle"))
 

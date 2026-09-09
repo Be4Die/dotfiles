@@ -16,6 +16,7 @@ SHORTCUTS = [
     ("󰈹  Super + Shift + F", "Браузер Firefox", "Приложения", "firefox"),
     ("󰨞  Super + Shift + Z", "Редактор кода Zed", "Приложения", "zed"),
     ("󰆍  Super + Shift + H", "Мультиплексор Herder", "Приложения", "alacritty -e herdr"),
+    ("󰆍  Super + Shift + D", "Диспетчер Docker (LazyDocker)", "Приложения", "alacritty -e lazydocker"),
     ("󰸉  Super + Shift + W", "Смена темы обоев", "Приложения", "wallpaper-toggle"),
     ("󰐥  Super + Escape", "Меню питания системы", "Приложения", "~/.config/hypr/powermenu.sh"),
 
