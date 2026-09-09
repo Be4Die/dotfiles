@@ -327,7 +327,6 @@ hl.window_rule({
     match       = { class = "flameshot" },
     float       = true,
     move        = "0 0",
-    size        = "100% 100%",
     no_anim     = true,
 })
 

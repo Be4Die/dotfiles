@@ -6,9 +6,12 @@ MODE="${1:-region}"
 mkdir -p "$HOME/Pictures/Screenshots"
 
 case "$MODE" in
-    region|output)
-        # Fullscreen freeze with crop tool (exact GitHub demo behavior, no separate window)
-        grim -l 0 - | satty --filename - --initial-tool crop
+    region)
+        # Direct Flameshot in-place overlay (exact 1-to-1 Lightshot clone)
+        flameshot gui
+        ;;
+    output)
+        flameshot full -c
         ;;
     window)
         hyprshot -m window --raw | satty --filename -
@@ -19,10 +22,10 @@ case "$MODE" in
         grim -g "$geom" - | wl-copy --type image/png
         notify-send -a "Скриншот" -i "camera-photo" "Снимок скопирован в буфер"
         ;;
-    flameshot)
-        flameshot gui
+    satty)
+        grim -l 0 - | satty --filename - --fullscreen --initial-tool crop
         ;;
     *)
-        grim -l 0 - | satty --filename - --initial-tool crop
+        flameshot gui
         ;;
 esac
