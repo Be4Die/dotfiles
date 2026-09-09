@@ -82,7 +82,7 @@ hl.config({
 ---- LAPTOP HOTKEYS -----
 -------------------------
 
-hl.bind("SUPER + P", hl.dsp.exec_cmd("~/dotfiles/scripts/toggle-mirror.sh"))
+hl.bind("SUPER + D", hl.dsp.exec_cmd("~/dotfiles/scripts/toggle-mirror.sh"))
 
 ---------------------------
 ---- LAPTOP AUTOSTART -----
