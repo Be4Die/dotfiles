@@ -1,4 +1,20 @@
 #!/usr/bin/env bash
-# Screenshot via Flameshot (Lightshot-style interactive capture & annotations)
-exec flameshot gui "$@"
+# Seamless screenshot wrapper for Flameshot
+# - Multi-monitor (Desktop PC): auto-targets active/focused monitor with -n <id> -e,
+#   bypassing the annoying monitor picker dialog completely.
+# - Single-monitor (Laptop): runs standard flameshot gui.
+# - Supports 'full' mode: 'screenshot full' captures all monitors combined to clipboard.
 
+if [ "$1" = "full" ] || [ "$1" = "all" ]; then
+    shift
+    exec flameshot full -c "$@"
+fi
+
+monitor_count=$(hyprctl monitors -j 2>/dev/null | jq 'length' 2>/dev/null || echo 1)
+
+if [ "$monitor_count" -gt 1 ]; then
+    focused_id=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select(.focused) | .id' 2>/dev/null)
+    exec flameshot screen -n "${focused_id:-0}" -e "$@"
+else
+    exec flameshot gui "$@"
+fi
