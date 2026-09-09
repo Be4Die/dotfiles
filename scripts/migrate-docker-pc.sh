@@ -4,7 +4,7 @@ set -e
 echo "=== [1/6] Проверка прав sudo ==="
 sudo -v
 
-echo "=== [2/6] Удаление Docker Desktop и QEMU компонентов ==="
+echo "=== [2/6] Удаление Docker Desktop и GitHub Desktop ==="
 if pacman -Qq docker-desktop &>/dev/null; then
     systemctl --user stop docker-desktop.service 2>/dev/null || true
     systemctl --user disable docker-desktop.service 2>/dev/null || true
@@ -13,9 +13,10 @@ if pacman -Qq docker-desktop &>/dev/null; then
 else
     echo "Docker Desktop не установлен, пропускаем."
 fi
+flatpak uninstall -y io.github.shiftey.Desktop 2>/dev/null || true
 
-echo "=== [3/6] Установка нативного Docker, Compose, Buildx и LazyDocker ==="
-sudo pacman -S --needed --noconfirm docker docker-compose docker-buildx lazydocker
+echo "=== [3/6] Установка нативного Docker, Compose, Buildx и LazyDocker / LazyGit ==="
+sudo pacman -S --needed --noconfirm docker docker-compose docker-buildx lazydocker lazygit
 
 echo "=== [4/6] Настройка проксирования через Mihomo (127.0.0.1:7897) ==="
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -68,5 +69,7 @@ echo "🎉 Миграция на нативный Docker успешно заве
 echo "Чтобы запускать docker/lazydocker без sudo в текущей сессии, выполните:"
 echo "    newgrp docker"
 echo "(или просто перезайдите в систему / перезагрузите ПК)."
-echo "Горячая клавиша для запуска в Hyprland: Super + Shift + D"
+echo "Горячие клавиши в Hyprland:"
+echo "    Super + Shift + D  ->  LazyDocker"
+echo "    Super + Shift + G  ->  LazyGit"
 echo "================================================================"
