@@ -1,31 +1,4 @@
 #!/usr/bin/env bash
-# Screenshot with Satty annotation editor (Lightshot alternative)
+# Screenshot via Flameshot (Lightshot-style interactive capture & annotations)
+exec flameshot gui "$@"
 
-MODE="${1:-region}"
-
-mkdir -p "$HOME/Pictures/Screenshots"
-
-case "$MODE" in
-    region)
-        # Direct Flameshot in-place overlay (exact 1-to-1 Lightshot clone)
-        flameshot gui
-        ;;
-    output)
-        flameshot full -c
-        ;;
-    window)
-        hyprshot -m window --raw | satty --filename -
-        ;;
-    quick)
-        # Direct region screenshot to clipboard (no annotation editor)
-        geom=$(slurp -d -b "#00000066" -c "#ca9ee6" -w 2) || exit 0
-        grim -g "$geom" - | wl-copy --type image/png
-        notify-send -a "Скриншот" -i "camera-photo" "Снимок скопирован в буфер"
-        ;;
-    satty)
-        grim -l 0 - | satty --filename - --fullscreen --initial-tool crop
-        ;;
-    *)
-        flameshot gui
-        ;;
-esac

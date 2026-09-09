@@ -221,16 +221,10 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- Screenshots (Satty / Lightshot style)
-hl.bind("PRINT",                   hl.dsp.exec_cmd("screenshot region"))
-hl.bind(mainMod .. " + PRINT",         hl.dsp.exec_cmd("screenshot window"))
-hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("screenshot output"))
-hl.bind("CTRL + PRINT",            hl.dsp.exec_cmd("screenshot quick"))
+-- Screenshots (Flameshot)
+hl.bind("PRINT",          hl.dsp.exec_cmd("flameshot gui"))
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("flameshot gui"))
 
--- macOS-style screenshot bindings (ALT + SHIFT + 3/4/5)
-hl.bind("ALT + SHIFT + 3", hl.dsp.exec_cmd("screenshot output"))
-hl.bind("ALT + SHIFT + 4", hl.dsp.exec_cmd("screenshot region"))
-hl.bind("ALT + SHIFT + 5", hl.dsp.exec_cmd("screenshot window"))
 
 -- Media Keys (Volume & Player)
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume raise"))
@@ -311,17 +305,8 @@ for _, cls in ipairs(float_apps) do
     })
 end
 
--- Floating full-screen overlay for screenshot annotation tools (Satty & Flameshot)
--- Keeps windows in floating layer to prevent any workspace tiling recalculation / twitching
-hl.window_rule({
-    name        = "satty-overlay",
-    match       = { class = "com.gabm.satty" },
-    float       = true,
-    move        = "0 0",
-    size        = "100% 100%",
-    no_anim     = true,
-})
-
+-- Floating overlay for Flameshot
+-- Keeps Flameshot in floating layer to prevent any workspace tiling recalculation / twitching
 hl.window_rule({
     name        = "flameshot-overlay",
     match       = { class = "flameshot" },
@@ -329,6 +314,7 @@ hl.window_rule({
     move        = "0 0",
     no_anim     = true,
 })
+
 
 -- Fixed adequate dimensions for utility managers (prevents half-screen tiling squeeze)
 hl.window_rule({

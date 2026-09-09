@@ -33,10 +33,8 @@ SHORTCUTS = [
     ("󰟸  Свайп 3 пальцами", "Смена воркспейсов (Тачпад)", "Окна", None),
 
     # Скриншоты
-    ("  Print / Alt + Shift + 4", "Снимок области + редактор (Satty)", "Снимки", "screenshot region"),
-    ("  Ctrl + Print", "Быстрый снимок области в буфер", "Снимки", "screenshot quick"),
-    ("  Super + Print / Alt+Shift+5", "Снимок окна + редактор (Satty)", "Снимки", "screenshot window"),
-    ("  Super+Shift+Print / Alt+Shift+3", "Весь экран + редактор (Satty)", "Снимки", "screenshot output"),
+    ("  Super + S / Print", "Снимок экрана / области (Flameshot)", "Снимки", "flameshot gui"),
+
 
     # Железо и мультимедиа
     ("󰃞  F1 / F2", "Яркость экрана меньше / больше", "Железо", "brightness-osd + 5%"),
