@@ -127,6 +127,7 @@ PACKAGES=(
     "waybar"
     "wlogout"
     "fuzzel"
+    "flameshot"
     "gsimplecal"
     "swayosd"
     "zed"

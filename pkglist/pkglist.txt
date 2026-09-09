@@ -48,6 +48,8 @@ dmidecode
 dmraid
 dnsmasq
 docker
+docker-buildx
+docker-compose
 dosfstools
 dotnet-sdk
 drawio-desktop
@@ -96,7 +98,7 @@ hyprland
 hyprpaper
 hyprpicker
 hyprpolkitagent
-hyprshot
+flameshot
 inetutils
 inotify-tools
 intel-ucode
@@ -106,6 +108,7 @@ jfsutils
 jre-openjdk
 kvantum
 lazydocker
+lazygit
 less
 lib32-nvidia-580xx-utils
 lib32-opencl-nvidia-580xx
