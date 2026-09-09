@@ -221,16 +221,16 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- Screenshots (Hyprshot)
-hl.bind("PRINT",                   hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
-hl.bind(mainMod .. " + PRINT",         hl.dsp.exec_cmd("hyprshot -m window"))
-hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m output"))
-hl.bind("CTRL + PRINT",            hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
+-- Screenshots (Satty / Lightshot style)
+hl.bind("PRINT",                   hl.dsp.exec_cmd("screenshot region"))
+hl.bind(mainMod .. " + PRINT",         hl.dsp.exec_cmd("screenshot window"))
+hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("screenshot output"))
+hl.bind("CTRL + PRINT",            hl.dsp.exec_cmd("screenshot quick"))
 
--- macOS-style screenshot bindings (ALT + SHIFT + 3/4/5 to avoid conflict with moving windows to workspaces)
-hl.bind("ALT + SHIFT + 3", hl.dsp.exec_cmd("hyprshot -m output"))
-hl.bind("ALT + SHIFT + 4", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
-hl.bind("ALT + SHIFT + 5", hl.dsp.exec_cmd("hyprshot -m window"))
+-- macOS-style screenshot bindings (ALT + SHIFT + 3/4/5)
+hl.bind("ALT + SHIFT + 3", hl.dsp.exec_cmd("screenshot output"))
+hl.bind("ALT + SHIFT + 4", hl.dsp.exec_cmd("screenshot region"))
+hl.bind("ALT + SHIFT + 5", hl.dsp.exec_cmd("screenshot window"))
 
 -- Media Keys (Volume & Player)
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("swayosd-client --output-volume raise"))
@@ -300,6 +300,7 @@ local float_apps = {
     "org.gnome.FileRoller",
     "zenity",
     "gsimplecal",
+    "com.gabm.satty",
 }
 
 for _, cls in ipairs(float_apps) do

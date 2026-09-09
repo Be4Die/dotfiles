@@ -15,8 +15,8 @@ else
 fi
 flatpak uninstall -y io.github.shiftey.Desktop 2>/dev/null || true
 
-echo "=== [3/6] Установка нативного Docker, Compose, Buildx и LazyDocker / LazyGit ==="
-sudo pacman -S --needed --noconfirm docker docker-compose docker-buildx lazydocker lazygit
+echo "=== [3/6] Установка нативного Docker, Compose, Buildx, LazyDocker, LazyGit и Satty ==="
+sudo pacman -S --needed --noconfirm docker docker-compose docker-buildx lazydocker lazygit satty
 
 echo "=== [4/6] Настройка проксирования через Mihomo (127.0.0.1:7897) ==="
 sudo mkdir -p /etc/systemd/system/docker.service.d

@@ -1,0 +1,12 @@
+[general]
+fullscreen = false
+early-exit = ["copy", "save"]
+initial-tool = "arrow"
+copy-command = "wl-copy"
+default-hide-toolbars = false
+primary-highlighter = "block"
+disable-notifications = false
+actions-on-enter = ["save-to-clipboard", "exit"]
+actions-on-escape = ["exit"]
+output-filename = "~/Pictures/Screenshots/screenshot-%Y%m%d-%H%M%S.png"
+save-after-copy = false

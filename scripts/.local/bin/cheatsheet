@@ -33,12 +33,10 @@ SHORTCUTS = [
     ("󰟸  Свайп 3 пальцами", "Смена воркспейсов (Тачпад)", "Окна", None),
 
     # Скриншоты
-    ("  Print / Ctrl + Print", "Снимок области в буфер обмена", "Снимки", "hyprshot -m region --clipboard-only"),
-    ("  Super + Print", "Снимок активного окна в файл", "Снимки", "hyprshot -m window"),
-    ("  Super + Shift + Print", "Снимок всего экрана в файл", "Снимки", "hyprshot -m output"),
-    ("  Alt + Shift + 3", "Весь экран (в стиле macOS)", "Снимки", "hyprshot -m output"),
-    ("  Alt + Shift + 4", "Область в буфер (в стиле macOS)", "Снимки", "hyprshot -m region --clipboard-only"),
-    ("  Alt + Shift + 5", "Активное окно (в стиле macOS)", "Снимки", "hyprshot -m window"),
+    ("  Print / Alt + Shift + 4", "Снимок области + редактор (Satty)", "Снимки", "screenshot region"),
+    ("  Ctrl + Print", "Быстрый снимок области в буфер", "Снимки", "screenshot quick"),
+    ("  Super + Print / Alt+Shift+5", "Снимок окна + редактор (Satty)", "Снимки", "screenshot window"),
+    ("  Super+Shift+Print / Alt+Shift+3", "Весь экран + редактор (Satty)", "Снимки", "screenshot output"),
 
     # Железо и мультимедиа
     ("󰃞  F1 / F2", "Яркость экрана меньше / больше", "Железо", "brightness-osd + 5%"),
