@@ -46,7 +46,7 @@ SHORTCUTS = [
     ("󰕾  F11 / F12", "Громкость тише / громче", "Железо", "swayosd-client --output-volume raise"),
     ("󰐊  F7 / F8 / F9", "Медиа: Назад / Пауза / Вперед", "Железо", "playerctl play-pause"),
     ("󰌌  Super + Пробел", "Смена раскладки (US / RU)", "Железо", None),
-    ("󰍹  Super + P", "Дублирование / внешний монитор", "Железо", "~/dotfiles/scripts/toggle-mirror.sh"),
+    ("󰓅  Super + P", "Режим процессора (Тихий/Авто)", "Железо", "cpu-profile-menu"),
     ("󰋖  Super + /", "Подсказка по всем шорткатам", "Система", None),
 ]
 

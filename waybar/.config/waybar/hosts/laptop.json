@@ -96,7 +96,9 @@
 
     "cpu": {
         "format": "  {usage}%",
-        "interval": 5
+        "interval": 3,
+        "on-click": "cpu-profile-menu",
+        "tooltip-format": "Нажмите для выбора режима (Тихий/Авто)\nЗагрузка: {usage}%\nЧастота: {max_frequency} GHz"
     },
 
     "memory": {

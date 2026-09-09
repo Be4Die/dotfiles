@@ -246,6 +246,9 @@ if hostname ~= "cachyos-pc" then
     -- Wi-Fi Manager Menu
     hl.bind(mainMod .. " + W",       hl.dsp.exec_cmd("wifi-menu"))
 
+    -- CPU Performance & Silent Mode Menu (Quiet 1.2GHz / Eco / Balance / Turbo)
+    hl.bind(mainMod .. " + P",       hl.dsp.exec_cmd("cpu-profile-menu"))
+
     -- Screen Brightness (GMUX unlocked + Catppuccin OSD)
     hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightness-osd + 5%"))
     hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightness-osd - 5%"))
