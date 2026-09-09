@@ -32,13 +32,6 @@ cat > "$HOME/.docker/config.json" << 'DOCKER_CFG'
 {
 	"auths": {},
 	"currentContext": "default",
-	"proxies": {
-		"default": {
-			"httpProxy": "http://127.0.0.1:7897",
-			"httpsProxy": "http://127.0.0.1:7897",
-			"noProxy": "localhost,127.0.0.1"
-		}
-	},
 	"plugins": {
 		"-x-cli-hints": {
 			"enabled": "true"
