@@ -1,7 +1,7 @@
 [general]
-fullscreen = false
+fullscreen = true
 early-exit = ["copy", "save"]
-initial-tool = "arrow"
+initial-tool = "crop"
 copy-command = "wl-copy"
 default-hide-toolbars = false
 primary-highlighter = "block"

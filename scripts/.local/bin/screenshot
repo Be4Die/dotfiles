@@ -6,15 +6,12 @@ MODE="${1:-region}"
 mkdir -p "$HOME/Pictures/Screenshots"
 
 case "$MODE" in
-    region)
-        geom=$(slurp -d -b "#00000066" -c "#ca9ee6" -w 2) || exit 0
-        grim -g "$geom" - | satty --filename -
+    region|output)
+        # Fullscreen freeze with crop tool (exact GitHub demo behavior, no separate window)
+        grim - | satty --filename - --fullscreen --initial-tool crop
         ;;
     window)
         hyprshot -m window --raw | satty --filename -
-        ;;
-    output)
-        grim - | satty --filename -
         ;;
     quick)
         # Direct region screenshot to clipboard (no annotation editor)
@@ -22,8 +19,10 @@ case "$MODE" in
         grim -g "$geom" - | wl-copy --type image/png
         notify-send -a "Скриншот" -i "camera-photo" "Снимок скопирован в буфер"
         ;;
+    flameshot)
+        flameshot gui
+        ;;
     *)
-        geom=$(slurp -d -b "#00000066" -c "#ca9ee6" -w 2) || exit 0
-        grim -g "$geom" - | satty --filename -
+        grim - | satty --filename - --fullscreen --initial-tool crop
         ;;
 esac
