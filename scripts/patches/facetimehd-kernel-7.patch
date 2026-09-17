@@ -1,0 +1,11 @@
+--- a/fthd_v4l2.c
++++ b/fthd_v4l2.c
+@@ -397,7 +397,7 @@ static int fthd_v4l2_enum_fmt_vid_cap(struct file *file, void *fh,
+ 	}
+ 
+ 	fmt->type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+-	strncpy(fmt->description, desc, sizeof(fmt->description));
++	strscpy(fmt->description, desc, sizeof(fmt->description));
+ 
+ 	return 0;
+ }
