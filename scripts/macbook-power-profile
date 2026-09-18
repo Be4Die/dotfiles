@@ -1,0 +1,23 @@
+#!/bin/bash
+# Lightweight battery vs AC CPU profile manager for MacBook Pro
+
+ONLINE=$(cat /sys/class/power_supply/ADP1/online 2>/dev/null || cat /sys/class/power_supply/*/online 2>/dev/null | head -n 1)
+
+# Ensure governor is always schedutil
+for g in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
+    echo schedutil > "$g" 2>/dev/null || true
+done
+
+# Enable safe PCI runtime power management (without hard power cuts)
+for p in /sys/bus/pci/devices/*/power/control; do
+    echo auto > "$p" 2>/dev/null || true
+done
+
+# Restore custom user CPU limit if configured, otherwise default based on AC/Battery
+if [ -x /usr/local/bin/set-cpu-limit ] && [ -f /etc/cpu-limit.conf ]; then
+    /usr/local/bin/set-cpu-limit restore
+elif [ "$ONLINE" = "1" ]; then
+    echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo 2>/dev/null || true
+else
+    echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo 2>/dev/null || true
+fi

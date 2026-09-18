@@ -1,5 +1,4 @@
 [Default Applications]
-# Images -> gThumb
 image/jpeg=org.gnome.gThumb.desktop
 image/jpg=org.gnome.gThumb.desktop
 image/png=org.gnome.gThumb.desktop
@@ -19,8 +18,6 @@ image/avif=org.gnome.gThumb.desktop
 image/heif=org.gnome.gThumb.desktop
 image/vnd.microsoft.icon=org.gnome.gThumb.desktop
 image/x-icon=org.gnome.gThumb.desktop
-
-# Web & Documents -> Firefox
 text/html=firefox.desktop
 application/xhtml+xml=firefox.desktop
 application/x-extension-htm=firefox.desktop
@@ -32,11 +29,7 @@ application/pdf=onlyoffice-desktopeditors.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/chrome=firefox.desktop
-
-# Code & Text -> Zed
 application/json=dev.zed.Zed.desktop
-
-# VPN & Apps
 x-scheme-handler/clash=koala-clash.desktop
 x-scheme-handler/clash-verge=clash-verge.desktop
 x-scheme-handler/mihomo=koala-clash.desktop
@@ -69,7 +62,7 @@ image/avif=org.gnome.gThumb.desktop;
 image/heif=org.gnome.gThumb.desktop;
 image/vnd.microsoft.icon=org.gnome.gThumb.desktop;
 image/x-icon=org.gnome.gThumb.desktop;
-application/pdf=onlyoffice-desktopeditors.desktop;
+application/pdf=firefox.desktop;onlyoffice-desktopeditors.desktop;
 text/html=firefox.desktop;
 x-scheme-handler/http=firefox.desktop;
 x-scheme-handler/https=firefox.desktop;

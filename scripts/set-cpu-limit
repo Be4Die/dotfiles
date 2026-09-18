@@ -1,0 +1,57 @@
+#!/bin/bash
+set -e
+
+MODE="$1"
+CONF_FILE="/etc/cpu-limit.conf"
+
+case "$MODE" in
+    quiet|silent|1200|1.2)
+        FREQ=1200000
+        PCT=48
+        TURBO=1
+        LABEL="quiet"
+        ;;
+    eco|powersave|1600|1.6)
+        FREQ=1600000
+        PCT=64
+        TURBO=1
+        LABEL="eco"
+        ;;
+    balance|auto|2500|2.5)
+        FREQ=2500000
+        PCT=100
+        TURBO=1
+        LABEL="balance"
+        ;;
+    turbo|performance|max|3700|3.7)
+        FREQ=3700000
+        PCT=100
+        TURBO=0
+        LABEL="turbo"
+        ;;
+    restore)
+        if [ -f "$CONF_FILE" ]; then
+            exec "$0" "$(cat "$CONF_FILE")"
+        else
+            exec "$0" quiet
+        fi
+        ;;
+    *)
+        echo "Usage: $0 {quiet|eco|balance|turbo}"
+        exit 1
+        ;;
+esac
+
+# Apply to intel_pstate if available
+if [ -d /sys/devices/system/cpu/intel_pstate ]; then
+    echo "$TURBO" > /sys/devices/system/cpu/intel_pstate/no_turbo 2>/dev/null || true
+    echo "$PCT" > /sys/devices/system/cpu/intel_pstate/max_perf_pct 2>/dev/null || true
+fi
+
+# Apply hard frequency cap across all CPU cores
+for f in /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq; do
+    [ -f "$f" ] && echo "$FREQ" > "$f" 2>/dev/null || true
+done
+
+echo "$LABEL" > "$CONF_FILE" 2>/dev/null || true
+echo "CPU mode set to: $LABEL ($((FREQ / 1000)) MHz, Turbo=$([ "$TURBO" = "0" ] && echo "ON" || echo "OFF"))"
