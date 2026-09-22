@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Copyright (c) 2014-2015 Bruno Bierbaumer, Andreas Heider
+readonly sysfs_efi_vars="/sys/firmware/efi/efivars"
+readonly efi_gpu="gpu-power-prefs-fa4ce28d-b62f-4c99-9cc3-6815686e30f9"
+
+usage(){
+  cat <<EOF2
+Usage:
+  $(basename $0) --integrated   # Switch to integrated GPU
+  $(basename $0) --dedicated    # Switch to dedicated GPU (AMD)
+  $(basename $0) --status       # Check current NVRAM GPU setting
+EOF2
+}
+
+switch_gpu(){
+  if ! [ -d /sys/firmware/efi ]; then
+    printf "Fatal: $(basename $0) has to be run in EFI mode.\n" 1>&2
+    exit 1
+  fi
+  
+  if ! mount | grep -q $sysfs_efi_vars; then
+    if ! mount -t efivarfs none $sysfs_efi_vars; then
+      printf "Fatal: Could not mount '${sysfs_efi_vars}'.\n" 1>&2
+      exit 1
+    fi
+  fi
+  chattr -i "${sysfs_efi_vars}/${efi_gpu}" 2> /dev/null
+  if [ "$1" = "0" ]; then
+    rm -f "${sysfs_efi_vars}/${efi_gpu}" 2>/dev/null || printf "\x07\x00\x00\x00\x00\x00\x00\x00" > "${sysfs_efi_vars}/${efi_gpu}"
+    echo "Configured for next reboot: Dedicated GPU (AMD)"
+  else
+    printf "\x07\x00\x00\x00\x01\x00\x00\x00" > "${sysfs_efi_vars}/${efi_gpu}"
+    echo "Configured for next reboot: Integrated GPU (Intel Iris Pro)"
+  fi
+}
+
+check_status(){
+  if [ -f "${sysfs_efi_vars}/${efi_gpu}" ]; then
+    val=$(od -An -tx1 -N8 "${sysfs_efi_vars}/${efi_gpu}" 2>/dev/null | tr -d " ")
+    echo "Current EFI setting: ${val}"
+    if [[ "$val" =~ 01 ]]; then
+      echo "Active target: Integrated (Intel Iris Pro)"
+    else
+      echo "Active target: Dedicated (AMD)"
+    fi
+  else
+    echo "No custom EFI variable set (Defaults to Dedicated AMD)"
+  fi
+}
+
+case "$1" in
+  -i|--integrated)
+    switch_gpu 1
+  ;;
+  -d|--dedicated)
+    switch_gpu 0
+  ;;
+  -s|--status)
+    check_status
+  ;;
+  *)
+    usage 1>&2
+    exit 1
+  ;;
+esac

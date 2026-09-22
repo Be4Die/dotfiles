@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+echo "EMERGENCY: Reverting to Dedicated GPU (AMD) and rebooting..."
+/usr/local/bin/gpu-switch --dedicated
+rm -f /etc/gpu-switch-test-mode
+sleep 2
+systemctl reboot

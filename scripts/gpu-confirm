@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [ -f /etc/gpu-switch-test-mode ]; then
+  rm -f /etc/gpu-switch-test-mode
+  echo "SUCCESS! Integrated GPU (Intel Iris Pro) confirmed as permanent."
+  echo "Safety rollback timer has been disarmed."
+else
+  echo "Test mode is not active."
+fi
