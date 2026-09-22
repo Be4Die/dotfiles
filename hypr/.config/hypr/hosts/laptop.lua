@@ -13,6 +13,12 @@ hl.monitor({
     scale    = 2,
 })
 
+-- Disable phantom unpowered eDP output from secondary GPU
+hl.monitor({
+    output   = "eDP-2",
+    disabled = true,
+})
+
 hl.monitor({
     output   = "",
     mode     = "preferred",
@@ -21,15 +27,15 @@ hl.monitor({
 })
 
 
+
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
 
 -- Hardware video acceleration & Wayland optimizations
 hl.env("MOZ_ENABLE_WAYLAND", "1")
-hl.env("LIBVA_DRIVER_NAME", "radeonsi")
-hl.env("VDPAU_DRIVER", "radeonsi")
 hl.env("mesa_glthread", "true")
+
 
 -- Fix blurry text in XWayland apps (ONLYOFFICE, Steam, etc.) on Retina display with fractional scaling
 hl.config({

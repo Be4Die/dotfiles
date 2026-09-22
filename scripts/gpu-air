@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo "Switching to MacBook Air Mode (Intel Iris Pro 5200)..."
+/usr/local/bin/gpu-switch --integrated
+echo "Done! Run \"reboot\" to start on Intel Iris Pro."

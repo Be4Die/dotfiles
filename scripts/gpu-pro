@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo "Switching to MacBook Pro Mode (AMD Radeon R9 M370X)..."
+/usr/local/bin/gpu-switch --dedicated
+echo "Done! Run \"reboot\" to start on AMD Radeon (HDMI/external monitors active)."
