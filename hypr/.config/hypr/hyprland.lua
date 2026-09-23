@@ -46,6 +46,7 @@ hl.on("hyprland.start", function()
         hl.exec_cmd("koala-clash")
     end
 
+    hl.exec_cmd("swayosd-server")
     hl.exec_cmd("wallpaper-toggle init")
     hl.exec_cmd("hyprctl setcursor macOS 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme macOS")
