@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+import os, sys, time
+
+with open("/proc/cmdline") as f:
+    cmdline = f.read()
+
+if "module_blacklist=amdgpu,radeon" not in cmdline:
+    sys.exit(0)
+
+GMUX_DEBUG = "/sys/kernel/debug/apple_gmux"
+if os.path.isdir(GMUX_DEBUG):
+    try:
+        with open(f"{GMUX_DEBUG}/selected_port", "w") as f:
+            f.write("0x50\n")
+        with open(f"{GMUX_DEBUG}/selected_port_data", "wb") as f:
+            f.write(b"\x01")
+        time.sleep(0.05)
+        with open(f"{GMUX_DEBUG}/selected_port_data", "wb") as f:
+            f.write(b"\x00")
+    except Exception as e:
+        print(f"Error powering off dGPU: {e}", file=sys.stderr)
+
+aspm_path = "/sys/module/pcie_aspm/parameters/policy"
+if os.path.exists(aspm_path):
+    try:
+        with open(aspm_path, "w") as f:
+            f.write("powersupersave\n")
+    except Exception:
+        pass

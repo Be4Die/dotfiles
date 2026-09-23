@@ -1,0 +1,13 @@
+[Unit]
+Description=Power off discrete AMD GPU via Apple GMUX in Air Mode
+After=sys-kernel-debug.mount gmux-backlight-fix.service
+Wants=sys-kernel-debug.mount
+ConditionKernelCommandLine=module_blacklist=amdgpu,radeon
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/apple-gmux-dgpu-off
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
