@@ -18,12 +18,12 @@ flatpak uninstall -y io.github.shiftey.Desktop 2>/dev/null || true
 echo "=== [3/6] Установка нативного Docker, Compose, Buildx, LazyDocker, LazyGit и Satty ==="
 sudo pacman -S --needed --noconfirm docker docker-compose docker-buildx lazydocker lazygit satty
 
-echo "=== [4/6] Настройка проксирования через Mihomo (127.0.0.1:7897) ==="
+echo "=== [4/6] Настройка проксирования через FlClashX / Mihomo (127.0.0.1:7890) ==="
 sudo mkdir -p /etc/systemd/system/docker.service.d
 sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf > /dev/null << 'PROXY_EOF'
 [Service]
-Environment="HTTP_PROXY=http://127.0.0.1:7897"
-Environment="HTTPS_PROXY=http://127.0.0.1:7897"
+Environment="HTTP_PROXY=http://127.0.0.1:7890"
+Environment="HTTPS_PROXY=http://127.0.0.1:7890"
 Environment="NO_PROXY=localhost,127.0.0.1,docker"
 PROXY_EOF
 

@@ -17,8 +17,11 @@
 .config/mihomo/
 .config/io.github.clash-verge-rev.clash-verge-rev/
 .local/share/io.github.clash-verge-rev.clash-verge-rev/
+.local/share/com.follow.clashx/
 clash-verge/
 koala-clash/
+flclash/
+flclashx/
 *.sqlite
 cache.db
 logs/

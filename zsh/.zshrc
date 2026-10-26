@@ -37,3 +37,6 @@ if [[ -d "/opt/cuda-11.8" ]]; then
     export PATH="$CUDA_HOME/bin:$PATH"
     export LD_LIBRARY_PATH="$CUDA_HOME/targets/x86_64-linux/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 fi
+
+# opencode
+export PATH=/home/michael/.opencode/bin:$PATH
