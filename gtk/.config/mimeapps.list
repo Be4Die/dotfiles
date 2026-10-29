@@ -30,17 +30,20 @@ x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/chrome=firefox.desktop
 application/json=dev.zed.Zed.desktop
-x-scheme-handler/clash=flclashx.desktop
+x-scheme-handler/clash=flclash-url-handler.desktop
 x-scheme-handler/clash-verge=flclashx.desktop
 x-scheme-handler/mihomo=flclashx.desktop
 x-scheme-handler/koala-clash=flclashx.desktop
-x-scheme-handler/flclash=flclashx.desktop
+x-scheme-handler/flclash=flclash-url-handler.desktop
 x-scheme-handler/antigravity=antigravity.desktop
 x-scheme-handler/unityhub=unityhub.desktop
 x-scheme-handler/jetbrains=jetbrainsd.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 application/vnd.jgraph.mxfile=drawio.desktop
 application/x-executable=Alacritty.desktop
+x-scheme-handler/clashmeta=flclash-url-handler.desktop
+x-scheme-handler/flclashx=flclash-url-handler.desktop
+x-scheme-handler/clashx=flclash-url-handler.desktop
 
 [Added Associations]
 application/vnd.jgraph.mxfile=drawio.desktop;

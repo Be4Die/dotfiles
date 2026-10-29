@@ -15,7 +15,7 @@ if [ "$HOSTNAME" = "cachyos-laptop" ]; then
     # Margins tuned for 4 buttons to make them square
     wlogout -b 4 -c 30 -r 30 -T 350 -B 350 -L 120 -R 120 --layout ~/.config/wlogout/layout_laptop --css ~/.config/wlogout/style.css
 else
-    # PC: 2 buttons (Shutdown, Reboot)
-    # Margins tuned for 2 buttons to make them square (larger side margins)
-    wlogout -b 2 -c 40 -r 40 -T 350 -B 350 -L 400 -R 400 --layout ~/.config/wlogout/layout_pc --css ~/.config/wlogout/style.css
+    # PC: 3 buttons (Logout, Reboot, Shutdown)
+    # Margins tuned for 3 buttons to make them square
+    wlogout -b 3 -c 30 -r 30 -T 350 -B 350 -L 250 -R 250 --layout ~/.config/wlogout/layout_pc --css ~/.config/wlogout/style.css
 fi

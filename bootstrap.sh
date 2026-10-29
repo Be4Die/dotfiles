@@ -120,6 +120,7 @@ PACKAGES=(
     "kvantum"
     "lazydocker"
     "mpv"
+    "niri"
     "nwg-look"
     "qt6ct"
     "scripts"

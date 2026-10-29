@@ -22,6 +22,7 @@
 | **[003](file:///home/michael/dotfiles/docs/memory/003-unified-proxy-flclashx.md)** | **Единый прокси FlClashX (7890)** | Внедрено | `all` | Унификация порта `127.0.0.1:7890` для Docker, Zsh, терминала и Hyprland |
 | **[004](file:///home/michael/dotfiles/docs/memory/004-flameshot-screenshot-flow.md)** | **Скриншотер Flameshot + Grim** | Внедрено | `all` | Моментальный захват экрана без диалогов выбора монитора, отказ от Satty |
 | **[005](file:///home/michael/dotfiles/docs/memory/005-multi-host-architecture.md)** | **Мультихостовая архитектура и миграция** | Внедрено | `all` | Изоляция в `hosts/`, симлинки `bootstrap.sh`, подготовка к переходу на ультрабук |
+| **[006](file:///home/michael/dotfiles/docs/memory/006-niri-and-gpui-shell-coexistence.md)** | **Параллельное окружение Niri + GPUI Shell** | Внедрено | `desktop` | Изоляция конфигов, Logout в power menu, синхронизация хоткеев |
 
 ---
 

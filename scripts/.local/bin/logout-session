@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Terminate graphical session (Hyprland / Niri) back to SDDM
+
+# 1. If running under UWSM (Universal Wayland Session Manager)
+if [ -n "$UWSM_APP_ID" ] || [ -n "$UWSM_SESSION_ID" ]; then
+    uwsm stop 2>/dev/null && exit 0
+fi
+
+# 2. If running under Hyprland (supports Lua dispatcher in 0.55+)
+if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+    hyprctl dispatch 'hl.dsp.exit()' 2>/dev/null || hyprctl dispatch exit 2>/dev/null || pkill -x -u "$USER" Hyprland
+    exit 0
+fi
+
+# 3. If running under Niri
+if [ -n "$NIRI_SOCKET" ]; then
+    niri msg action quit --skip-confirmation 2>/dev/null || pkill -x -u "$USER" niri
+    exit 0
+fi
+
+# 4. Universal fallback
+uwsm stop 2>/dev/null || \
+hyprctl dispatch 'hl.dsp.exit()' 2>/dev/null || \
+niri msg action quit --skip-confirmation 2>/dev/null || \
+loginctl terminate-session self 2>/dev/null || \
+pkill -u "$USER" -x "Hyprland|niri"

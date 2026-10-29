@@ -1,0 +1,251 @@
+// =============================================================================
+// NIRI CONFIGURATION (Desktop Profile - cachyos-pc)
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Input Configuration
+// -----------------------------------------------------------------------------
+input {
+    keyboard {
+        xkb {
+            layout "us,ru"
+            options "grp:alt_shift_toggle"
+        }
+        numlock
+    }
+
+    mouse {
+        // Linear/flat mouse acceleration
+    }
+
+    warp-mouse-to-focus
+    focus-follows-mouse
+}
+
+// -----------------------------------------------------------------------------
+// Displays & Monitors (matches hypr/hosts/desktop.lua)
+// -----------------------------------------------------------------------------
+// Primary Landscape Monitor (HDMI-A-1)
+output "HDMI-A-1" {
+    mode "1920x1080@60"
+    scale 1.0
+    position x=1080 y=420
+}
+
+// Secondary Portrait Monitor (DVI-D-1) rotated 90 deg counter-clockwise
+output "DVI-D-1" {
+    mode "1920x1080@60"
+    scale 1.0
+    transform "90"
+    position x=0 y=0
+}
+
+// -----------------------------------------------------------------------------
+// Environment Variables (NVIDIA Wayland setup)
+// -----------------------------------------------------------------------------
+environment {
+    LIBVA_DRIVER_NAME "nvidia"
+    GBM_BACKEND "nvidia-drm"
+    NVD_BACKEND "direct"
+    WLR_RENDERER_ALLOW_SOFTWARE "1"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    QT_QPA_PLATFORM "wayland;xcb"
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    QT_STYLE_OVERRIDE "kvantum"
+    XDG_SESSION_TYPE "wayland"
+    XDG_CURRENT_DESKTOP "niri"
+    XCURSOR_SIZE "24"
+    XCURSOR_THEME "macOS"
+    BROWSER "firefox"
+}
+
+// -----------------------------------------------------------------------------
+// Autostart Applications & Services
+// -----------------------------------------------------------------------------
+spawn-at-startup "systemctl" "--user" "start" "hyprpolkitagent"
+spawn-at-startup "flclashx"
+spawn-at-startup "swayosd-server"
+spawn-at-startup "wallpaper-toggle" "init"
+spawn-at-startup "gpuishell"
+
+// -----------------------------------------------------------------------------
+// Layout & Appearance (Catppuccin Frappe Theme)
+// -----------------------------------------------------------------------------
+layout {
+    gaps 8
+
+    center-focused-column "always"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        width 2
+        active-color "#ca9ee6"   // Frappe Mauve
+        inactive-color "#414559" // Frappe Surface0
+    }
+
+    border {
+        off
+    }
+
+    shadow {
+        softness 20
+        spread 2
+        offset x=0 y=4
+        color "#00000066"
+    }
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// -----------------------------------------------------------------------------
+// Keybindings
+// -----------------------------------------------------------------------------
+binds {
+    // --- Core Applications ---
+    Mod+Q { spawn "alacritty"; }
+    Mod+C { close-window; }
+    Mod+E { spawn "thunar"; }
+    Mod+V { toggle-window-floating; }
+    Mod+R { spawn "gpuishell"; } // Primary GPUI Shell App Launcher
+    Mod+D { spawn "gpuishell"; }
+    Mod+Shift+R { spawn "fuzzel"; } // Fallback Fuzzel
+    Mod+B { spawn "blueman-manager"; }
+    Mod+Escape { spawn-sh "$HOME/.config/hypr/powermenu.sh"; }
+    Mod+Space { switch-layout "next"; }
+
+    // --- Custom App Shortcuts ---
+    Mod+Shift+T { spawn "Telegram"; }
+    Mod+Shift+F { spawn "firefox"; }
+    Mod+Shift+Z { spawn "zed"; }
+    Mod+Shift+H { spawn "alacritty" "-e" "herdr"; }
+    Mod+Shift+D { spawn "alacritty" "-e" "lazydocker"; }
+    Mod+Shift+W { spawn "wallpaper-toggle"; }
+
+    // --- Native Niri Screenshots ---
+    Print { screenshot; }
+    Mod+S { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+
+    // --- Window & Workspace Switching ---
+    Alt+Tab { focus-window-previous; }
+    Mod+Tab { focus-workspace-previous; }
+
+    // --- Column & Window Navigation ---
+    Mod+Left  { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up    { focus-window-or-workspace-up; }
+    Mod+Down  { focus-window-or-workspace-down; }
+    Mod+H     { focus-column-left; }
+    Mod+L     { focus-column-right; }
+    Mod+K     { focus-window-or-workspace-up; }
+    Mod+J     { focus-window-or-workspace-down; }
+    Mod+Home  { focus-column-first; }
+    Mod+End   { focus-column-last; }
+
+    // --- Moving Columns & Windows ---
+    Mod+Ctrl+Left  { move-column-left; }
+    Mod+Ctrl+Right { move-column-right; }
+    Mod+Ctrl+Up    { move-window-up-or-to-workspace-up; }
+    Mod+Ctrl+Down  { move-window-down-or-to-workspace-down; }
+    Mod+Ctrl+H     { move-column-left; }
+    Mod+Ctrl+L     { move-column-right; }
+    Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
+    Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
+    Mod+Ctrl+Home  { move-column-to-first; }
+    Mod+Ctrl+End   { move-column-to-last; }
+
+    // --- Monitor Navigation ---
+    Mod+Shift+Left  { focus-monitor-left; }
+    Mod+Shift+Right { focus-monitor-right; }
+    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+
+    // --- Workspaces (1..9) ---
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+
+    Mod+Ctrl+1 { move-column-to-workspace 1; }
+    Mod+Ctrl+2 { move-column-to-workspace 2; }
+    Mod+Ctrl+3 { move-column-to-workspace 3; }
+    Mod+Ctrl+4 { move-column-to-workspace 4; }
+    Mod+Ctrl+5 { move-column-to-workspace 5; }
+    Mod+Ctrl+6 { move-column-to-workspace 6; }
+    Mod+Ctrl+7 { move-column-to-workspace 7; }
+    Mod+Ctrl+8 { move-column-to-workspace 8; }
+    Mod+Ctrl+9 { move-column-to-workspace 9; }
+
+    // --- Scrolling with mouse wheel ---
+    // Super + Wheel: Horizontal ribbon (columns)
+    Mod+WheelScrollDown      cooldown-ms=150 { focus-column-right; }
+    Mod+WheelScrollUp        cooldown-ms=150 { focus-column-left; }
+    Mod+WheelScrollRight     { focus-column-right; }
+    Mod+WheelScrollLeft      { focus-column-left; }
+
+    // Super + Shift + Wheel: Vertical workspaces
+    Mod+Shift+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+Shift+WheelScrollUp   cooldown-ms=150 { focus-workspace-up; }
+
+    // Super + Ctrl + Wheel: Switch monitors
+    Mod+Ctrl+WheelScrollDown  cooldown-ms=150 { focus-monitor-next; }
+    Mod+Ctrl+WheelScrollUp    cooldown-ms=150 { focus-monitor-previous; }
+
+    // --- Column & Window Resizing and Layout ---
+    Mod+W { switch-preset-column-width; }
+    Mod+Shift+C { center-column; }
+    Mod+T { toggle-column-tabbed-display; }
+    Mod+F { maximize-column; }
+    Mod+Shift+M { fullscreen-window; }
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    // Ingest/expel window into column (stacking)
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    // --- Multimedia & Audio Keys ---
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "raise"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "lower"; }
+    XF86AudioMute        allow-when-locked=true { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
+    XF86AudioPlay        allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioNext        allow-when-locked=true { spawn "playerctl" "next"; }
+    XF86AudioPrev        allow-when-locked=true { spawn "playerctl" "previous"; }
+
+    // --- Overview & Cheatsheet ---
+    Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+O { toggle-overview; }
+
+    // --- Session Exit ---
+    Mod+Shift+E { quit; }
+}

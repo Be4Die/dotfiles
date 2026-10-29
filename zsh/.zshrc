@@ -40,3 +40,9 @@ fi
 
 # opencode
 export PATH=/home/michael/.opencode/bin:$PATH
+
+# Smart session logout (Hyprland / Niri -> SDDM)
+logout() {
+    logout-session
+}
+
