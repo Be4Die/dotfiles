@@ -40,6 +40,7 @@
 - Профиль защиты от утечки VRAM в драйвере Nvidia для Niri уже присутствует в `/etc/nvidia/nvidia-application-profiles-rc.d/limit-vram-usage`.
 
 ### 4. Сборка и интеграция GPUI Shell
+Форк репозитория создан и опубликован на GitHub: [Be4Die/gpui-shell](https://github.com/Be4Die/gpui-shell) (upstream: `andre-brandao/gpui-shell`).  
 Исходный код склонирован в `~/Projects/gpui-shell` и собран в release-режиме с помощью Rust toolchain.  
 Бинарный файл установлен в `~/.local/bin/gpuishell` (с алиасом `gpui-shell`).  
 Запускается автоматически при старте Niri через `spawn-at-startup "gpuishell"`.
