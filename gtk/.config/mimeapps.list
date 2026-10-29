@@ -81,6 +81,8 @@ application/x-extension-xht=firefox.desktop;
 application/json=dev.zed.Zed.desktop;
 text/markdown=dev.zed.Zed.desktop;
 application/x-executable=Alacritty.desktop;
+text/plain=jetbrains-rider-62512703-6a8a-4d6f-be8f-2b51b36319dd.desktop;
+text/x-csrc=dev.zed.Zed.desktop;
 
 [Removed Associations]
 image/jpeg=com.google.Chrome.desktop;

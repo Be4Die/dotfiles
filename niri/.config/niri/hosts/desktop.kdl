@@ -1,0 +1,27 @@
+// =============================================================================
+// NIRI HOST PROFILE: DESKTOP (cachyos-pc)
+// =============================================================================
+
+// Displays & Monitors (matches hypr/hosts/desktop.lua)
+// Primary Landscape Monitor (HDMI-A-1)
+output "HDMI-A-1" {
+    mode "1920x1080@60"
+    scale 1.0
+    position x=1080 y=420
+}
+
+// Secondary Portrait Monitor (DVI-D-1) rotated 90 deg counter-clockwise
+output "DVI-D-1" {
+    mode "1920x1080@60"
+    scale 1.0
+    transform "90"
+    position x=0 y=0
+}
+
+// Environment Variables (NVIDIA Wayland setup)
+environment {
+    LIBVA_DRIVER_NAME "nvidia"
+    GBM_BACKEND "nvidia-drm"
+    NVD_BACKEND "direct"
+    WLR_RENDERER_ALLOW_SOFTWARE "1"
+}

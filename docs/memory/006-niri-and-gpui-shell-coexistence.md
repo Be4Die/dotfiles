@@ -30,14 +30,18 @@
 Пакет `niri` установлен через официальный репозиторий CachyOS (`pacman -S niri xdg-desktop-portal-gnome`).  
 Это предоставило файл сессии `/usr/share/wayland-sessions/niri.desktop`. На экране входа SDDM выбор между Hyprland и Niri происходит через стандартный выпадающий список сессий.
 
-### 3. Изоляция конфигурации Niri через Stow
-- Создан модуль [niri/.config/niri/config.kdl](file:///home/michael/dotfiles/niri/.config/niri/config.kdl) внутри репозитория `dotfiles`.
-- Модуль добавлен в список `PACKAGES` в [bootstrap.sh](file:///home/michael/dotfiles/bootstrap.sh) и развернут через `stow`.
-- **Настройка двух дисплеев под `cachyos-pc`:**
-  - `HDMI-A-1`: `1920x1080@60`, позиция `x=1080 y=420` (основной).
-  - `DVI-D-1`: `1920x1080@60`, поворот `transform "90"`, позиция `x=0 y=0` (вертикальный).
-- **Переменные окружения для Nvidia:** `LIBVA_DRIVER_NAME`, `GBM_BACKEND`, `NVD_BACKEND direct`.
-- Профиль защиты от утечки VRAM в драйвере Nvidia для Niri уже присутствует в `/etc/nvidia/nvidia-application-profiles-rc.d/limit-vram-usage`.
+### 3. Изоляция конфигурации Niri через структуру профилей хостов (Мультихост)
+- Для строгого соблюдения архитектуры мультихоста (ADR 005 и AGENTS.md) конфигурация Niri декомпозирована на общий файл и аппаратные профили хостов:
+  - [niri/.config/niri/config.kdl](file:///home/michael/dotfiles/niri/.config/niri/config.kdl): базовый конфигуратор, содержит общие стили, темы, лаунчер, окна, хоткеи и директиву `include "host.kdl"`.
+  - [niri/.config/niri/hosts/desktop.kdl](file:///home/michael/dotfiles/niri/.config/niri/hosts/desktop.kdl):
+    - Дисплеи: `HDMI-A-1` (1080p, x=1080 y=420) и `DVI-D-1` (1080p rotated 90, x=0 y=0).
+    - Переменные окружения Nvidia (`LIBVA_DRIVER_NAME nvidia`, `GBM_BACKEND nvidia-drm`, `NVD_BACKEND direct`, `WLR_RENDERER_ALLOW_SOFTWARE 1`).
+  - [niri/.config/niri/hosts/laptop.kdl](file:///home/michael/dotfiles/niri/.config/niri/hosts/laptop.kdl):
+    - Дисплей: Retina 15" `eDP-1` (`2880x1800@60`, нативное масштабирование `scale 2.0`), отключение фантомного выхода `eDP-2` (`off`).
+    - Тачпад: `tap`, `natural-scroll`, `accel-speed 0.2`, `scroll-method "two-finger"`.
+    - Переменные среды Mesa/Wayland (`MOZ_ENABLE_WAYLAND 1`, `mesa_glthread true`).
+    - Аппаратные хоткеи: яркость экрана Apple GMUX (`XF86MonBrightnessUp/Down` $\to$ `brightness-osd`) и подсветка клавиатуры Apple SMC (`XF86KbdBrightnessUp/Down` $\to$ `kbd-brightness-osd`).
+- Модуль добавлен в список `PACKAGES` в [bootstrap.sh](file:///home/michael/dotfiles/bootstrap.sh) и развернут через `stow`. Симлинк `host.kdl` добавлен в `.gitignore`.
 
 ### 4. Сборка и интеграция GPUI Shell
 Форк репозитория создан и опубликован на GitHub: [Be4Die/gpui-shell](https://github.com/Be4Die/gpui-shell) (upstream: `andre-brandao/gpui-shell`).  

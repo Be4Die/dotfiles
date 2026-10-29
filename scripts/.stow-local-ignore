@@ -6,3 +6,15 @@ lid-handler.sh
 toggle-mirror.sh
 unlock-gmux
 window-cycle.sh
+apple-gmux-dgpu-off
+gpu-air
+gpu-confirm
+gpu-pro
+gpu-rollback
+gpu-safety-daemon
+gpu-switch
+intel-undervolt.conf
+macbook-power-profile
+migrate-docker-pc.sh
+patches
+set-cpu-limit

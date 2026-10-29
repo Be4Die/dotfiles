@@ -23,31 +23,14 @@ input {
 }
 
 // -----------------------------------------------------------------------------
-// Displays & Monitors (matches hypr/hosts/desktop.lua)
+// Host Profile Inclusion (Monitors, Hardware Envs, Input & Keys)
 // -----------------------------------------------------------------------------
-// Primary Landscape Monitor (HDMI-A-1)
-output "HDMI-A-1" {
-    mode "1920x1080@60"
-    scale 1.0
-    position x=1080 y=420
-}
-
-// Secondary Portrait Monitor (DVI-D-1) rotated 90 deg counter-clockwise
-output "DVI-D-1" {
-    mode "1920x1080@60"
-    scale 1.0
-    transform "90"
-    position x=0 y=0
-}
+include "host.kdl"
 
 // -----------------------------------------------------------------------------
-// Environment Variables (NVIDIA Wayland setup)
+// Common Environment Variables
 // -----------------------------------------------------------------------------
 environment {
-    LIBVA_DRIVER_NAME "nvidia"
-    GBM_BACKEND "nvidia-drm"
-    NVD_BACKEND "direct"
-    WLR_RENDERER_ALLOW_SOFTWARE "1"
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     QT_QPA_PLATFORM "wayland;xcb"
     QT_QPA_PLATFORMTHEME "qt6ct"

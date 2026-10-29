@@ -1,0 +1,40 @@
+// =============================================================================
+// NIRI HOST PROFILE: LAPTOP (MacBook Pro 15" Mid-2015 Retina)
+// =============================================================================
+
+// Displays & Monitors (matches hypr/hosts/laptop.lua)
+// Retina 15" (2880x1800@60 with native 2.0 integer Retina scale)
+output "eDP-1" {
+    mode "2880x1800@60"
+    scale 2.0
+    position x=0 y=0
+}
+
+// Disable phantom unpowered eDP output from secondary GPU
+output "eDP-2" {
+    off
+}
+
+// Touchpad & Gestures
+input {
+    touchpad {
+        tap
+        natural-scroll
+        accel-speed 0.2
+        scroll-method "two-finger"
+    }
+}
+
+// Environment Variables (Mesa / Intel Iris Pro + AMD Radeon)
+environment {
+    MOZ_ENABLE_WAYLAND "1"
+    mesa_glthread "true"
+}
+
+// Laptop Hotkeys (Brightness via GMUX & Keyboard Backlight via SMC)
+binds {
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "brightness-osd" "up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightness-osd" "down"; }
+    XF86KbdBrightnessUp   allow-when-locked=true { spawn "kbd-brightness-osd" "up"; }
+    XF86KbdBrightnessDown allow-when-locked=true { spawn "kbd-brightness-osd" "down"; }
+}

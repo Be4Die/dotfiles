@@ -57,8 +57,9 @@
 
 ## 🔗 Файлы конфигурации профиля `laptop`
 
-- **Оконный менеджер:** [hypr/.config/hypr/hosts/laptop.lua](file:///home/michael/dotfiles/hypr/.config/hypr/hosts/laptop.lua)
-- **Панель статуса:** [waybar/.config/waybar/hosts/laptop.json](file:///home/michael/dotfiles/waybar/.config/waybar/hosts/laptop.json) и [laptop.css](file:///home/michael/dotfiles/waybar/.config/waybar/hosts/laptop.css) (компактный размер для 15" экрана)
+- **Оконный менеджер (основной):** [hypr/.config/hypr/hosts/laptop.lua](file:///home/michael/dotfiles/hypr/.config/hypr/hosts/laptop.lua)
+- **Оконный менеджер (альтернативный):** [niri/.config/niri/hosts/laptop.kdl](file:///home/michael/dotfiles/niri/.config/niri/hosts/laptop.kdl) (Retina 2x, GMUX brightness, тачпад)
+- **Шелл и статус-бар:** `gpuishell` (GPUI Shell fork) / [waybar/.config/waybar/hosts/laptop.json](file:///home/michael/dotfiles/waybar/.config/waybar/hosts/laptop.json) и [laptop.css](file:///home/michael/dotfiles/waybar/.config/waybar/hosts/laptop.css)
 - **Эмулятор терминала:** [alacritty/.config/alacritty/hosts/laptop.toml](file:///home/michael/dotfiles/alacritty/.config/alacritty/hosts/laptop.toml) (шрифт 10.5pt)
 - **Уведомления:** [dunst/.config/dunst/hosts/laptop.conf](file:///home/michael/dotfiles/dunst/.config/dunst/hosts/laptop.conf)
 - **Редактор кода:** [zed/.config/zed/hosts/laptop.json](file:///home/michael/dotfiles/zed/.config/zed/hosts/laptop.json)

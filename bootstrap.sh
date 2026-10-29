@@ -48,6 +48,7 @@ ln -sf "$DOTFILES_DIR/hypr/.config/hypr/hosts/${HOST_TYPE}.lua" "$DOTFILES_DIR/h
 ln -sf "$DOTFILES_DIR/waybar/.config/waybar/hosts/${HOST_TYPE}.json" "$DOTFILES_DIR/waybar/.config/waybar/config"
 ln -sf "$DOTFILES_DIR/alacritty/.config/alacritty/hosts/${HOST_TYPE}.toml" "$DOTFILES_DIR/alacritty/.config/alacritty/local.toml"
 ln -sf "$DOTFILES_DIR/zed/.config/zed/hosts/${HOST_TYPE}.json" "$DOTFILES_DIR/zed/.config/zed/settings.json"
+ln -sf "$DOTFILES_DIR/niri/.config/niri/hosts/${HOST_TYPE}.kdl" "$DOTFILES_DIR/niri/.config/niri/host.kdl"
 
 # Remove default CachyOS desktop bloat (noctua-shell) on fresh laptop install
 if [ "$HOST_TYPE" = "laptop" ]; then
